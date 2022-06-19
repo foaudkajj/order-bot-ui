@@ -1,11 +1,13 @@
-import React, { useState, createContext, useContext, useEffect } from 'react';
+import React, { useState, createContext, useContext, useEffect } from "react";
 
-
-const NavigationContext = createContext({});
+const NavigationContext = createContext({
+  navigationData: { currentPath: "" },
+  setNavigationData: (param: { currentPath: string }) => {},
+});
 const useNavigation = () => useContext(NavigationContext);
 
 function NavigationProvider(props) {
-  const [navigationData, setNavigationData] = useState({ currentPath: '' });
+  const [navigationData, setNavigationData] = useState({ currentPath: "" });
 
   return (
     <NavigationContext.Provider
@@ -24,12 +26,8 @@ function withNavigationWatcher(Component, path) {
     }, [path, setNavigationData]);
 
     return <Component {...props} />;
-  }
+  };
   return <WrappedComponent />;
 }
 
-export {
-  NavigationProvider,
-  useNavigation,
-  withNavigationWatcher
-}
+export { NavigationProvider, useNavigation, withNavigationWatcher };

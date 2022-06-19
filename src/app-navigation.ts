@@ -9,10 +9,6 @@ export const navigation = [
     icon: 'folder',
     items: [
       {
-        text: 'Profile',
-        path: '/profile'
-      },
-      {
         text: 'Tasks',
         path: '/tasks'
       }

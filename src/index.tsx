@@ -1,11 +1,11 @@
-import './polyfills';
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
+import "./polyfills";
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import reportWebVitals from "./reportWebVitals";
 import App from './App';
-import reportWebVitals from './reportWebVitals';
 
-const root = ReactDOM.createRoot(document.getElementById('root') as Element );
+const root = ReactDOM.createRoot(document.getElementById("root") as Element);
 root.render(
   <React.StrictMode>
     <App />
