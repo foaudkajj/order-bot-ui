@@ -1,8 +1,8 @@
 import React from 'react';
 import Toolbar, { Item } from 'devextreme-react/toolbar';
 import Button from 'devextreme-react/button';
-import UserPanel from '../user-panel/UserPanel';
-import './Header.scss';
+import UserPanel from '../user-panel/user-panel';
+import './header.scss';
 import { Template } from 'devextreme-react/core/template';
 
 

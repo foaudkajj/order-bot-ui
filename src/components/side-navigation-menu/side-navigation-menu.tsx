@@ -3,7 +3,7 @@ import TreeView from "devextreme-react/tree-view";
 import { navigation } from "../../app-navigation";
 import { useNavigation } from "../../contexts/navigation.context";
 import { useScreenSize } from "../../utils/media-query";
-import "./SideNavigationMenu.scss";
+import "./side-navigation-menu.scss"
 
 import * as events from "devextreme/events";
 

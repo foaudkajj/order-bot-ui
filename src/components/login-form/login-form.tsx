@@ -11,7 +11,7 @@ import LoadIndicator from "devextreme-react/load-indicator";
 import notify from "devextreme/ui/notify";
 import { useAuth } from "../../contexts/auth.context";
 
-import "./LoginForm.scss";
+import "./login-form.scss";
 import { LoginResponse, UIResponse } from "../../pages/models";
 
 export default function LoginForm() {
