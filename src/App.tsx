@@ -8,7 +8,7 @@ import LoadPanel from "devextreme-react/load-panel";
 import { NavigationProvider } from "./contexts/navigation.context";
 import { AuthProvider, useAuth } from "./contexts/auth.context";
 import { useScreenSizeClass } from "./utils/media-query";
-import Content from "./Content";
+import Content from "./content";
 import UnauthenticatedContent from "./UnauthenticatedContent";
 
 function App() {
