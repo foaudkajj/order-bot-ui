@@ -1,23 +1,44 @@
 import React, { useEffect, useRef, useCallback, useMemo } from "react";
 import TreeView from "devextreme-react/tree-view";
-import { navigation } from "../../app-navigation";
 import { useNavigation } from "../../contexts/navigation.context";
 import { useScreenSize } from "../../utils/media-query";
-import "./side-navigation-menu.scss"
+import "./side-navigation-menu.scss";
+import { useTranslation } from "react-i18next";
 
 import * as events from "devextreme/events";
+import { LoginResponse } from "../../pages/models";
 
 export default function SideNavigationMenu(props) {
   const { children, selectedItemChanged, openMenu, compactMode, onMenuReady } =
     props;
 
   const { isLarge } = useScreenSize();
+  const { t } = useTranslation();
+  const navigationItems =
+    (JSON.parse(localStorage.getItem("user") ?? "[]") as LoginResponse)
+      ?.NavigationItems ?? [];
+
   function normalizePath() {
-    return navigation.map((item) => ({
-      ...item,
-      expanded: isLarge,
-      path: item.path && !/^\//.test(item.path) ? `/${item.path}` : item.path,
-    }));
+    return navigationItems.map((item) => {
+      const children =
+        item?.children && item?.children?.length > 0
+          ? item.children.map((m) => {
+              return {
+                text: t(m.translate),
+                icon: m.icon ?? undefined,
+                path: m.url,
+              };
+            })
+          : undefined;
+
+      return {
+        ...item,
+        text: t(item.translate),
+        items: children,
+        expanded: isLarge,
+        path: item.url && !/^\//.test(item.url) ? `/${item.url}` : item.url,
+      };
+    });
   }
 
   const items = useMemo(
