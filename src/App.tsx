@@ -10,6 +10,7 @@ import { AuthProvider, useAuth } from "./contexts/auth.context";
 import { useScreenSizeClass } from "./utils/media-query";
 import Content from "./content";
 import UnauthenticatedContent from "./UnauthenticatedContent";
+import "./i18n/i18n";
 
 function App() {
   const { user, loading } = useAuth();
