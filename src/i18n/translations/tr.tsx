@@ -48,6 +48,7 @@ export const tr = {
     USER_NAME: "K. Adı",
   },
   NAV: {
+    HOME: "Ana sayfa",
     PRODUCTS_MANAGEMENT: "Ürün yönetimi",
     CATEGORIES: "Kategoriler",
     USER_MANAGEMENT: "Kullanıcı Yöntetimi",
