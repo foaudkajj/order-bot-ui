@@ -8,32 +8,22 @@ import Form, {
   RequiredRule,
 } from "devextreme-react/form";
 import LoadIndicator from "devextreme-react/load-indicator";
-import notify from "devextreme/ui/notify";
 import { useAuth } from "../../contexts/auth.context";
 
 import "./login-form.scss";
-import { LoginResponse, UIResponse } from "../../pages/models";
 
 export default function LoginForm() {
   // const navigate = useNavigate();
   const { signIn } = useAuth();
-  const [loading, setLoading] = useState(false);
+  const [loading] = useState(false);
   const formData = useRef({ username: "", password: "" });
 
   const onSubmit = useCallback(
     async (e) => {
       e.preventDefault();
       const { username, password } = formData.current;
-      // setLoading(true);
 
-      const result: UIResponse<LoginResponse> = await signIn(
-        username,
-        password
-      );
-      if (result.IsError) {
-        setLoading(false);
-        notify(result.MessageKey, "error", 2000);
-      }
+      await signIn(username, password);
     },
     [signIn]
   );

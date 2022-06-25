@@ -8,7 +8,7 @@ import {
   ValidationRule,
 } from "devextreme-react/data-grid";
 import CustomStore from "devextreme/data/custom_store";
-import React, {  useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import DxStoreService from "../../services/dx-store.service";
 import GetService from "../../services/get.service";
@@ -22,10 +22,13 @@ const UserStatus = [
 
 export default function UserManagement() {
   const { t } = useTranslation();
+
   const [roleList, setRoles] = useState<Role[]>([]);
   const [allowAdd, setAllowAdd] = useState<boolean>(false);
   const [allowDelete, setAllowDelete] = useState<boolean>(false);
   const [allowUpdate, setAllowUpdate] = useState<boolean>(false);
+
+  const usersGrid = useRef(null);
   const storeOption: DxStoreOptions = {
     loadUrl: "User/Get",
     insertUrl: "User/Insert",
@@ -39,7 +42,6 @@ export default function UserManagement() {
     onUpdated: () => usersGrid?.current?.instance?.refresh(),
   };
   const store: CustomStore = DxStoreService.getStore(storeOption);
-  const usersGrid = useRef(null);
 
   useEffect(() => {
     GetService.getRoles().then((roles) => setRoles(roles.Result));
@@ -48,7 +50,7 @@ export default function UserManagement() {
       setAllowDelete(UIPermessions.includes("DELETE_USER"));
       setAllowUpdate(UIPermessions.includes("UPDATE_USER"));
     });
-  });
+  }, []);
 
   return (
     <React.Fragment>

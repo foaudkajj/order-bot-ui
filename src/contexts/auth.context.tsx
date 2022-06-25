@@ -23,12 +23,12 @@ function AuthProvider(props) {
       }
       setLoading(false);
     })();
-  }, [user]);
+  }, []);
 
   const signIn = useCallback(async (username, password) => {
     setLoading(true);
     const result = await sendSignInRequest(username, password);
-    if (result?.Result.IsAuthenticated) {
+    if (result?.Result?.IsAuthenticated) {
       setUser(result.Result);
       sessionStorage.setItem("Authorization", result.Result.Token);
       localStorage.setItem("user", JSON.stringify(result.Result));
