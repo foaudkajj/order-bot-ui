@@ -1,4 +1,4 @@
-import { HomePage, OrderPage, TasksPage, UserManagementPage } from "./pages";
+import { HomePage, OrderPage, RoleManagement, TasksPage, UserManagementPage } from "./pages";
 import { withNavigationWatcher } from "./contexts/navigation.context";
 
 const routes = [
@@ -18,6 +18,10 @@ const routes = [
     path: "/usermanagement",
     element: UserManagementPage,
   },
+  {
+    path: "/rolemanagement",
+    element: RoleManagement
+  }
 ];
 
 export default routes.map((route) => {
