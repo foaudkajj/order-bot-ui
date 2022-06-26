@@ -1,4 +1,4 @@
-import { HomePage, OrderPage, RoleManagement, TasksPage, UserManagementPage } from "./pages";
+import { Categories, HomePage, OrderPage, Products, RoleManagement, TasksPage, UserManagementPage } from "./pages";
 import { withNavigationWatcher } from "./contexts/navigation.context";
 
 const routes = [
@@ -21,6 +21,15 @@ const routes = [
   {
     path: "/rolemanagement",
     element: RoleManagement
+  },
+  {
+    path: "/categories",
+    element: Categories
+  }
+  ,
+  {
+    path: "/products",
+    element: Products
   }
 ];
 

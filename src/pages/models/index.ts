@@ -4,4 +4,5 @@ export * from "./responses/login-response";
 export * from "./dx-store-options";
 export * from "./role";
 export * from "./category";
+export * from "./product";
 export * from "./requests/role-id-and-permessions";

@@ -30,7 +30,8 @@ export default function RoleManagement() {
   const storeOptions: DxStoreOptions = {
     loadUrl: "Roles/Get",
     insertUrl: "Roles/Insert",
-    updateUrl: "Update",
+    updateUrl: "Roles/Update",
+    updateMethod: "POST",
     deleteUrl: "Roles/Delete",
     deleteMethod: "POST",
     Key: "Id",

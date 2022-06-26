@@ -6,7 +6,7 @@ const getRoles = async () => {
 };
 
 const getCategories = async () => {
-    return AxiosService.get<Category[]>(`Category/Get`);
+    return AxiosService.get<Category>(`Category/Get`);
 };
 
 const GetService = {
