@@ -12,12 +12,12 @@ import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import DxStoreService from "../../services/dx-store.service";
 import GetService from "../../services/get.service";
-import PermissionService from "../../services/permession.service";
+import PermissionService from "../../services/permission.service";
 import { DxStoreOptions, Role } from "../models";
 
 const UserStatus = [
-  { Id: 1, Name: "Aktif" },
-  { Id: 0, Name: "Pasif" },
+  { id: 1, name: "Aktif" },
+  { id: 0, name: "Pasif" },
 ];
 
 export default function UserManagement() {
@@ -36,7 +36,7 @@ export default function UserManagement() {
     updateMethod: "POST",
     deleteUrl: "User/Delete",
     deleteMethod: "POST",
-    Key: "Id",
+    Key: "id",
     onInserted: () => usersGrid?.current?.instance?.refresh(),
     onRemoved: () => usersGrid?.current?.instance?.refresh(),
     onUpdated: () => usersGrid?.current?.instance?.refresh(),
@@ -44,11 +44,13 @@ export default function UserManagement() {
   const store: CustomStore = DxStoreService.getStore(storeOption);
 
   useEffect(() => {
-    GetService.getRoles().then((roles) => setRoles(roles.Result));
-    PermissionService.getPermissions().then((UIPermessions) => {
-      setAllowAdd(UIPermessions.includes("ADD_USER"));
-      setAllowDelete(UIPermessions.includes("DELETE_USER"));
-      setAllowUpdate(UIPermessions.includes("UPDATE_USER"));
+    GetService.getRoles().then((roles) => {
+      setRoles(roles.data)
+    });
+    PermissionService.getPermissions().then((UIPermissions) => {
+      setAllowAdd(UIPermissions.includes("ADD_USER"));
+      setAllowDelete(UIPermissions.includes("DELETE_USER"));
+      setAllowUpdate(UIPermissions.includes("UPDATE_USER"));
     });
   }, []);
 
@@ -77,67 +79,67 @@ export default function UserManagement() {
             <Scrolling columnRenderingMode={"virtual"} />
 
             <Column
-              dataField={"Id"}
-              caption={"Id"}
+              dataField={"id"}
+              caption={"id"}
               dataType={"number"}
               visible={false}
               formItem={{ visible: false }}
             />
 
-            <Column dataField={"Name"} caption={t("USER_MANAGEMENT.NAME")}>
+            <Column dataField={"name"} caption={t("USER_MANAGEMENT.NAME")}>
               <ValidationRule type={"required"} />
             </Column>
 
             <Column
-              dataField={"LastName"}
+              dataField={"lastName"}
               caption={t("USER_MANAGEMENT.LASTNAME")}
             >
               <ValidationRule type={"required"} />
             </Column>
 
             <Column
-              dataField={"Cellphone"}
+              dataField={"cellphone"}
               caption={t("USER_MANAGEMENT.CELLPHONE")}
               dataType={"string"}
               editorOptions={{ mask: "(999)999-9999" }}
             />
 
             <Column
-              dataField={"UserName"}
+              dataField={"userName"}
               caption={t("USER_MANAGEMENT.USER_NAME")}
             >
               <ValidationRule type={"required"} />
             </Column>
 
             <Column
-              dataField={"UserStatus"}
+              dataField={"userStatus"}
               caption={t("USER_MANAGEMENT.USER_STATUS")}
             >
               <Lookup
                 dataSource={UserStatus}
-                valueExpr={"Id"}
-                displayExpr={"Name"}
+                valueExpr={"id"}
+                displayExpr={"name"}
               />
               <ValidationRule type={"required"} />
             </Column>
 
             <Column
-              dataField={"Password"}
+              dataField={"password"}
               caption={t("USER_MANAGEMENT.PASSWORD")}
               visible={false}
             >
               <ValidationRule type={"required"} />
             </Column>
 
-            <Column dataField={"Email"} caption={t("USER_MANAGEMENT.EMAIL")}>
+            <Column dataField={"email"} caption={t("USER_MANAGEMENT.EMAIL")}>
               <ValidationRule type={"email"} />
             </Column>
 
-            <Column dataField={"RoleId"} caption={t("USER_MANAGEMENT.ROLE")}>
+            <Column dataField={"roleId"} caption={t("USER_MANAGEMENT.ROLE")}>
               <Lookup
                 dataSource={roleList}
-                valueExpr={"Id"}
-                displayExpr={"RoleName"}
+                valueExpr={"id"}
+                displayExpr={"roleName"}
               />
               <ValidationRule type={"required"} />
             </Column>

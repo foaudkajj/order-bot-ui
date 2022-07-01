@@ -371,7 +371,7 @@ export default function Orders() {
             <Column
               allowSorting={false}
               dataField="id"
-              caption="Id"
+              caption="id"
               visible={false}
               formItem={{ visible: false }}
               dataType={"number"}

@@ -1,19 +1,19 @@
-import { RoleIdAndPermessions } from "../pages/models";
+import { RoleIdAndPermissions } from "../pages/models";
 import AxiosService from "./axios.service";
 
 
-const saveRolePermessions = (
-    roleIdAndPermessions: RoleIdAndPermessions,
+const saveRolePermissions = (
+    roleIdAndPermissions: RoleIdAndPermissions,
 ) => {
     let result$ = AxiosService.post<any>(
-        `Roles/SaveRolePermessions`,
-        roleIdAndPermessions,
+        `Roles/SaveRolePermissions`,
+        roleIdAndPermissions,
     );
     return result$;
 }
 
 const RoleService = {
-    saveRolePermessions
+    saveRolePermissions: saveRolePermissions
 };
 
 export default RoleService;

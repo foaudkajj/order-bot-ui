@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 
 import * as events from "devextreme/events";
 import { LoginResponse } from "../../pages/models";
+import query from "devextreme/data/query";
 
 export default function SideNavigationMenu(props) {
   const { children, selectedItemChanged, openMenu, compactMode, onMenuReady } =
@@ -16,29 +17,32 @@ export default function SideNavigationMenu(props) {
   const { t } = useTranslation();
   const navigationItems =
     (JSON.parse(localStorage.getItem("user") ?? "[]") as LoginResponse)
-      ?.NavigationItems ?? [];
+      ?.navigationItems ?? [];
 
   function normalizePath() {
-    return navigationItems.map((item) => {
-      const children =
-        item?.children && item?.children?.length > 0
-          ? item.children.map((m) => {
-              return {
-                text: t(m.translate),
-                icon: m.icon ?? undefined,
-                path: m.url,
-              };
-            })
-          : undefined;
+    return query(navigationItems)
+      .sortBy("priority")
+      .toArray()
+      .map((item) => {
+        const children =
+          item?.children && item?.children?.length > 0
+            ? item.children.map((m) => {
+                return {
+                  text: t(m.translate),
+                  icon: m.icon ?? undefined,
+                  path: m.url,
+                };
+              })
+            : undefined;
 
-      return {
-        ...item,
-        text: t(item.translate),
-        items: children,
-        expanded: isLarge,
-        path: item.url && !/^\//.test(item.url) ? `/${item.url}` : item.url,
-      };
-    });
+        return {
+          ...item,
+          text: t(item.translate),
+          items: children,
+          expanded: isLarge,
+          path: item.url && !/^\//.test(item.url) ? `/${item.url}` : item.url,
+        };
+      });
   }
 
   const items = useMemo(

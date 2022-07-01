@@ -10,7 +10,7 @@ import CustomStore from "devextreme/data/custom_store";
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import DxStoreService from "../../services/dx-store.service";
-import PermissionService from "../../services/permession.service";
+import PermissionService from "../../services/permission.service";
 import { DxStoreOptions } from "../models";
 
 export default function Categories() {
@@ -36,10 +36,10 @@ export default function Categories() {
   const store: CustomStore = DxStoreService.getStore(storeOption);
 
   useEffect(() => {
-    PermissionService.getPermissions().then((UIPermessions) => {
-      setAllowAdd(UIPermessions.includes("ADD_CATEGORY"));
-      setAllowDelete(UIPermessions.includes("DELETE_CATEGORY"));
-      setAllowUpdate(UIPermessions.includes("UPDATE_CATEGORY"));
+    PermissionService.getPermissions().then((UIPermissions) => {
+      setAllowAdd(UIPermissions.includes("ADD_CATEGORY"));
+      setAllowDelete(UIPermissions.includes("DELETE_CATEGORY"));
+      setAllowUpdate(UIPermissions.includes("UPDATE_CATEGORY"));
     });
   }, []);
 
@@ -68,8 +68,8 @@ export default function Categories() {
             <Scrolling columnRenderingMode={"virtual"} />
 
             <Column
-              dataField={"Id"}
-              caption={"Id"}
+              dataField={"id"}
+              caption={"id"}
               dataType={"number"}
               visible={false}
               formItem={{ visible: false }}

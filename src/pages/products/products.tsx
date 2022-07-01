@@ -13,7 +13,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import DxStoreService from "../../services/dx-store.service";
 import GetService from "../../services/get.service";
-import PermissionService from "../../services/permession.service";
+import PermissionService from "../../services/permission.service";
 import { Category, DxStoreOptions } from "../models";
 
 export default function Products() {
@@ -45,10 +45,10 @@ export default function Products() {
       setCategoryList(categories.data)
     }
     );
-    PermissionService.getPermissions().then((UIPermessions) => {
-      setAllowAdd(UIPermessions.includes("ADD_PRODUCT"));
-      setAllowDelete(UIPermessions.includes("DELETE_PRODUCT"));
-      setAllowUpdate(UIPermessions.includes("UPDATE_PRODUCT"));
+    PermissionService.getPermissions().then((UIPermissions) => {
+      setAllowAdd(UIPermissions.includes("ADD_PRODUCT"));
+      setAllowDelete(UIPermissions.includes("DELETE_PRODUCT"));
+      setAllowUpdate(UIPermissions.includes("UPDATE_PRODUCT"));
     });
   }, []);
 

@@ -12,10 +12,10 @@ import "devextreme/data/odata/store";
 import { useTranslation } from "react-i18next";
 import { Button, TreeList } from "devextreme-react";
 import { Selection } from "devextreme-react/tree-list";
-import { DxStoreOptions, RoleIdAndPermessions } from "../models";
+import { DxStoreOptions, RoleIdAndPermissions } from "../models";
 import ToastService from "../../services/toast.service";
 import RoleService from "../../services/role.service";
-import PermissionService from "../../services/permession.service";
+import PermissionService from "../../services/permission.service";
 import CustomStore from "devextreme/data/custom_store";
 import DxStoreService from "../../services/dx-store.service";
 
@@ -34,7 +34,7 @@ export default function RoleManagement() {
     updateMethod: "POST",
     deleteUrl: "Roles/Delete",
     deleteMethod: "POST",
-    Key: "Id",
+    Key: "id",
     onInserted: () => rolesGrid?.current?.instance.refresh(),
     onRemoved: () => rolesGrid?.current?.instance.refresh(),
     onUpdated: () => rolesGrid?.current?.instance.refresh(),
@@ -43,10 +43,10 @@ export default function RoleManagement() {
     DxStoreService.getStore(storeOptions);
 
   useEffect(() => {
-    PermissionService.getPermissions().then((UIPermessions) => {
-      setAllowAdd(UIPermessions.includes("ADD_ROLE"));
-      setAllowDelete(UIPermessions.includes("DELETE_ROLE"));
-      setAllowUpdate(UIPermessions.includes("UPDATE_ROLE"));
+    PermissionService.getPermissions().then((UIPermissions) => {
+      setAllowAdd(UIPermissions.includes("ADD_ROLE"));
+      setAllowDelete(UIPermissions.includes("DELETE_ROLE"));
+      setAllowUpdate(UIPermissions.includes("UPDATE_ROLE"));
     });
   });
 
@@ -74,15 +74,15 @@ export default function RoleManagement() {
             <Scrolling columnRenderingMode={"virtual"} />
 
             <Column
-              dataField={"Id"}
-              caption={"Id"}
+              dataField={"id"}
+              caption={"id"}
               dataType={"number"}
               visible={false}
               formItem={{ visible: false }}
             />
 
             <Column
-              dataField={"RoleName"}
+              dataField={"roleName"}
               caption={t("ROLE_MANAGEMENT.ROLE_NAME")}
             >
               <ValidationRule type={"required"} />
@@ -98,73 +98,73 @@ export default function RoleManagement() {
 
 const MasterDetailTemplate = (role) => {
   const { t } = useTranslation();
-  const permessionsTree = useRef(null);
-  const [allowUpdatingPermessions, setAllowUpdatingPermessions] =
+  const permissionsTree = useRef(null);
+  const [allowUpdatingPermissions, setAllowUpdatingPermissions] =
     useState<boolean>(false);
-  const [selectedPermessionIdList, setSelectedPermessionIdList] =
+  const [selectedPermissionIdList, setSelectedPermissionIdList] =
     useState<string[]>();
-  const [permessionsListStore, setPermessionsListStore] = useState<any>();
+  const [permissionsListStore, setPermissionsListStore] = useState<any>();
 
   useEffect(() => {
-    PermissionService.getPermissions().then((UIPermessions) => {
-      setAllowUpdatingPermessions(UIPermessions.includes("UPATE_PERMESSIONS"));
+    PermissionService.getPermissions().then((UIPermissions) => {
+      setAllowUpdatingPermissions(UIPermissions.includes("UPATE_PERMISSIONS"));
     });
 
-    const permessionsListStoreOption: DxStoreOptions = {
-      loadUrl: "Roles/GetPermessions",
-      Key: "PermessionKey",
-      onInserted: () => permessionsTree?.current?.instance.refresh(),
-      onRemoved: () => permessionsTree?.current?.instance.refresh(),
-      onUpdated: () => permessionsTree?.current?.instance.refresh(),
+    const permissionsListStoreOption: DxStoreOptions = {
+      loadUrl: "Roles/GetPermissions",
+      Key: "permissionKey",
+      onInserted: () => permissionsTree?.current?.instance.refresh(),
+      onRemoved: () => permissionsTree?.current?.instance.refresh(),
+      onUpdated: () => permissionsTree?.current?.instance.refresh(),
     };
 
-    setPermessionsListStore(
-      DxStoreService.getStore(permessionsListStoreOption)
+    setPermissionsListStore(
+      DxStoreService.getStore(permissionsListStoreOption)
     );
 
-    setSelectedPermessionIdList(role.data.data.RolePermessionsIds);
-  }, [role.data.data.RolePermessionsIds]);
+    setSelectedPermissionIdList(role.data.data.rolePermissionsIds);
+  }, [role.data.data.rolePermissionsIds]);
 
   const treeListTitleDisplayValue = (rowData) => {
-    return t(rowData.PermessionKey);
+    return t(rowData.permissionKey);
   };
 
-  const selectedRowKeysChanged = (permessionIdList) => {
-    setSelectedPermessionIdList(permessionIdList);
+  const selectedRowKeysChanged = (permissionIdList) => {
+    setSelectedPermissionIdList(permissionIdList);
   };
 
   return (
     <>
       <TreeList
-        ref={permessionsTree}
-        dataSource={permessionsListStore}
-        keyExpr={"PermessionKey"}
-        parentIdExpr={"ParentKey"}
-        hasItemsExpr={"IsParent"}
+        ref={permissionsTree}
+        dataSource={permissionsListStore}
+        keyExpr={"permissionKey"}
+        parentIdExpr={"parentKey"}
+        hasItemsExpr={"isParent"}
         showRowLines={true}
         showBorders={true}
         columnAutoWidth={true}
         wordWrapEnabled={true}
-        selectedRowKeys={selectedPermessionIdList}
+        selectedRowKeys={selectedPermissionIdList}
         onSelectedRowKeysChange={selectedRowKeysChanged}
       >
         <Selection mode={"multiple"} recursive={false} />
         <Column
-          dataField={"Id"}
+          dataField={"id"}
           visible={false}
           formItem={{ visible: false }}
         ></Column>
         <Column
-          dataField={"PermessionKey"}
+          dataField={"permissionKey"}
           calculateDisplayValue={treeListTitleDisplayValue}
         ></Column>
       </TreeList>
       <Button
-        disabled={!allowUpdatingPermessions}
+        disabled={!allowUpdatingPermissions}
         onClick={(e) =>
           save(
-            permessionsTree.current?.instance?.getSelectedRowsData("all"),
-            role.data.data.Id
+            permissionsTree.current?.instance?.getSelectedRowsData("all"),
+            role.data.data.id
           )
         }
         style={{ float: "right" }}
@@ -175,12 +175,12 @@ const MasterDetailTemplate = (role) => {
 };
 
 const save = (selectedRows: any, roleId: number) => {
-  const roleIdAndPermessions: RoleIdAndPermessions = {
+  const roleIdAndPermissions: RoleIdAndPermissions = {
     roleId: roleId,
-    rolePermessions: selectedRows.map((mp) => mp.Id),
+    rolePermissions: selectedRows.map((mp) => mp.id),
   };
-  RoleService.saveRolePermessions(roleIdAndPermessions).then((t) => {
-    t.IsError
+  RoleService.saveRolePermissions(roleIdAndPermissions).then((t) => {
+    t.isError
       ? ToastService.showToast("error")
       : ToastService.showToast("success");
   });

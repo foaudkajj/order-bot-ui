@@ -24,8 +24,8 @@ const AuthService = {
 };
 
 const errorResponse = {
-  StatusCode: 500,
-  IsError: true,
-  MessageKey: "ERROR",
+  statusCode: 500,
+  isError: true,
+  messageKey: "ERROR",
 };
 export default AuthService;

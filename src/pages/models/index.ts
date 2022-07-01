@@ -5,4 +5,4 @@ export * from "./dx-store-options";
 export * from "./role";
 export * from "./category";
 export * from "./product";
-export * from "./requests/role-id-and-permessions";
+export * from "./requests/role-id-and-permissions";

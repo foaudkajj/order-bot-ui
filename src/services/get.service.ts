@@ -2,7 +2,7 @@ import { Category, Role } from "../pages/models";
 import AxiosService from "./axios.service";
 
 const getRoles = async () => {
-    return AxiosService.get<Role[]>(`Roles/Get`);
+    return AxiosService.get<Role>(`Roles/Get`);
 };
 
 const getCategories = async () => {
