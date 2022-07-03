@@ -11,6 +11,9 @@ import { useScreenSizeClass } from "./utils/media-query";
 import Content from "./content";
 import UnauthenticatedContent from "./UnauthenticatedContent";
 import "./i18n/i18n";
+import config from "devextreme/core/config";
+import trMessages from "devextreme/localization/messages/tr.json";
+import { locale, loadMessages } from "devextreme/localization";
 
 function App() {
   const { user, loading } = useAuth();
@@ -28,6 +31,13 @@ function App() {
 
 export default function Root() {
   const screenSizeClass = useScreenSizeClass();
+
+  config({
+    defaultCurrency: "TRY",
+  });
+
+  loadMessages(trMessages);
+  locale("tr-TR");
 
   return (
     <Router>
