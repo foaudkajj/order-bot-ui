@@ -16,7 +16,7 @@ const getStore = (storeOptions: DxStoreOptions): CustomStore => {
     loadMode: storeOptions.loadMode,
     onInserted: (values: UIResponse<any>, key) => {
       if (storeOptions.onInserted) storeOptions.onInserted(values, key);
-      else if (!values.IsError) ToastService.showToast("success");
+      else if (!values.isError) ToastService.showToast("success");
     },
     onLoaded: (result: Array<any>) => {
       if (storeOptions.onLoaded) storeOptions?.onLoaded(result);

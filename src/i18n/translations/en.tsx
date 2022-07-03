@@ -47,7 +47,7 @@ export const en = {
     USER_NAME: "K. Adı",
   },
   NAV: {
-    HOME: "Home",
+    DASHBOARD: "Home",
     PRODUCTS_MANAGEMENT: "Products management",
     CATEGORIES: "Kategoriler",
     USER_MANAGEMENT: "CUSTOMER Management",

@@ -1,8 +1,8 @@
 export interface UIResponse<T> {
-  StatusCode: number;
-  IsError: boolean;
-  MessageKey: string;
-  Result?: T;
+  statusCode: number;
+  isError: boolean;
+  messageKey: string;
+  result?: T;
   data?: T[];
   totalCount?: number;
   groupCount?: number;

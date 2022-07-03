@@ -3,23 +3,33 @@ import i18n from "i18next";
 import { UIResponse } from "../pages/models";
 import ToastService from "./toast.service";
 
+
+
 const client = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
 });
 
+client.interceptors.request.use(function (config) {
+  const token = sessionStorage.getItem("Authorization");
+  config.headers.Authorization = token ? `Bearer ${token}` : '';
+  return config;
+});
+
+
 async function get<T>(url: string) {
   try {
+    
     const result = await client.request<T, AxiosResponse<UIResponse<T>>>({
       method: "GET",
       url,
       responseType: "json",
     });
 
-    if (result.status !== 200 || result.data.IsError) {
-      if (result.data.MessageKey !== "") {
+    if (result.status !== 200 || result.data.isError) {
+      if (result.data.messageKey !== "") {
         ToastService.showToast(
           "error",
-          i18n.t(result.data.MessageKey ?? "MESSAGES.UNSUCCESSFUL_OPERATION")
+          i18n.t(result.data.messageKey ?? "MESSAGES.UNSUCCESSFUL_OPERATION")
         );
       } else {
         ToastService.showToast(
@@ -47,12 +57,12 @@ async function post<T>(url: string, payload: Object) {
 
     if (
       (result.status !== 200 && result.status !== 201) ||
-      result.data.IsError
+      result.data.isError
     ) {
-      if (result.data.MessageKey !== "") {
+      if (result.data.messageKey !== "") {
         ToastService.showToast(
           "error",
-          i18n.t(result.data.MessageKey ?? "MESSAGES.UNSUCCESSFUL_OPERATION")
+          i18n.t(result.data.messageKey ?? "MESSAGES.UNSUCCESSFUL_OPERATION")
         );
       } else {
         ToastService.showToast(
@@ -78,11 +88,11 @@ async function put<T>(url: string, payload: Object) {
       data: payload,
     });
 
-    if (result.status !== 200 || result.data.IsError) {
-      if (result.data.MessageKey !== "") {
+    if (result.status !== 200 || result.data.isError) {
+      if (result.data.messageKey !== "") {
         ToastService.showToast(
           "error",
-          i18n.t(result.data.MessageKey ?? "MESSAGES.UNSUCCESSFUL_OPERATION")
+          i18n.t(result.data.messageKey ?? "MESSAGES.UNSUCCESSFUL_OPERATION")
         );
       } else {
         ToastService.showToast(
