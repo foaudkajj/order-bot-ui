@@ -70,11 +70,10 @@ export const en = {
     PRODUCT: {
       TITLE: "Ürün Yönetimi",
       TYPE: "Type",
-      THUMB_URL: "Thumb Url",
+      THUMB_URL: "Thumb",
       PRODUCT_TITLE: "Product Title",
       DESCRIPTION: "Description",
       CAPTION: "Caption",
-      PRODUCT_CODE: "Product Code",
       UNIT_PRICE: "Unit Price",
       CATEGORY_KEY: "Category",
       GETIR_IMPORT_UPDATE_BTN: "Import/Update Getir",

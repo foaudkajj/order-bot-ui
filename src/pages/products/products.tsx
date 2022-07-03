@@ -1,13 +1,14 @@
-import { DataGrid, Tooltip } from "devextreme-react";
+import { DataGrid, FileUploader, Tooltip } from "devextreme-react";
 import {
   Column,
   Editing,
+  Form,
   Format,
   Lookup,
-  Popup,
   Scrolling,
   ValidationRule,
 } from "devextreme-react/data-grid";
+import { Item } from "devextreme-react/form";
 import CustomStore from "devextreme/data/custom_store";
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -41,10 +42,9 @@ export default function Products() {
   const store: CustomStore = DxStoreService.getStore(storeOption);
 
   useEffect(() => {
-    GetService.getCategories().then((categories) =>{
-      setCategoryList(categories.data)
-    }
-    );
+    GetService.getCategories().then((categories) => {
+      setCategoryList(categories.data);
+    });
     PermissionService.getPermissions().then((UIPermissions) => {
       setAllowAdd(UIPermissions.includes("ADD_PRODUCT"));
       setAllowDelete(UIPermissions.includes("DELETE_PRODUCT"));
@@ -65,6 +65,10 @@ export default function Products() {
         setTooltipVisibility(!tooltipVisible);
       });
       e.setValue(e.editorOptions.value);
+    }
+
+    if (e.parentType === "dataRow" && e.dataField === "description") {
+      e.editorName = "dxTextArea";
     }
   };
 
@@ -94,7 +98,13 @@ export default function Products() {
               allowDeleting={allowDelete}
               allowUpdating={allowUpdate}
             >
-              <Popup width={"auto"} height={"auto"} />
+              <Form colCount={3}>
+                <Item dataField="title" />
+                <Item dataField="unitPrice" />
+                <Item dataField="categoryId" />
+                <Item dataField="description" colSpan={3} />
+                <Item dataField="thumbUrl" colSpan={3} />
+              </Form>
             </Editing>
             <Scrolling columnRenderingMode={"virtual"} />
 
@@ -106,23 +116,10 @@ export default function Products() {
               formItem={{ visible: false }}
             />
 
-            <Column dataField={"thumbUrl"} caption={t("PRODUCT.THUMB_URL")}>
-            </Column>
             <Column dataField={"title"} caption={t("PRODUCT.PRODUCT_TITLE")}>
               <ValidationRule type={"required"} />
             </Column>
-            <Column
-              dataField={"description"}
-              caption={t("PRODUCT.DESCRIPTION")}
-            >
-              <ValidationRule type={"required"} />
-            </Column>
-            <Column
-              dataField={"productCode"}
-              caption={t("PRODUCT.PRODUCT_CODE")}
-            >
-              <ValidationRule type={"required"} />
-            </Column>
+
             <Column
               dataField={"unitPrice"}
               caption={t("PRODUCT.UNIT_PRICE")}
@@ -132,6 +129,14 @@ export default function Products() {
               <Format type={"currency"} precision={2} />
               <ValidationRule type={"required"} />
             </Column>
+
+            <Column
+              dataField={"description"}
+              caption={t("PRODUCT.DESCRIPTION")}
+            >
+              <ValidationRule type={"required"} />
+            </Column>
+
             <Column
               dataField={"categoryId"}
               caption={t("PRODUCT.CATEGORY_KEY")}
@@ -144,6 +149,14 @@ export default function Products() {
               <ValidationRule type={"required"} />
             </Column>
 
+            <Column
+              dataField={"thumbUrl"}
+              caption={t("PRODUCT.THUMB_URL")}
+              editCellRender={thumbUploaderEditTemplate}
+              cellRender={thumbUploaderTemplate}
+              width={100}
+              formItem={{ colSpan: 2 }}
+            ></Column>
           </DataGrid>
         </div>
       </div>
@@ -157,3 +170,40 @@ export default function Products() {
     </React.Fragment>
   );
 }
+
+const thumbUploaderTemplate = (e: any) => {
+  const blobUrl = process.env.REACT_APP_BLOB_URL;
+  return (
+    <>
+      <img
+        src={blobUrl + e.data.thumbUrl}
+        alt={e.data.title}
+        style={{ width: "40px" }}
+      />
+    </>
+  );
+};
+
+const thumbUploaderEditTemplate = (eTemplate: any) => {
+  const thumbUploaded = (e) => {
+    eTemplate.setValue(e.file.name);
+  };
+
+  const token = sessionStorage.getItem("Authorization");
+  const uploadHeaders = {
+    Authorization: "Bearer " + token,
+  };
+  const uploadUrl = `${process.env.REACT_APP_API_URL}Products/upload`;
+  return (
+    <>
+      <FileUploader
+        multiple={false}
+        accept="image/*"
+        uploadMode="instantly"
+        onUploaded={thumbUploaded}
+        uploadHeaders={uploadHeaders}
+        uploadUrl={uploadUrl}
+      />
+    </>
+  );
+};

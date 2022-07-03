@@ -71,11 +71,10 @@ export const tr = {
   PRODUCT: {
     TITLE: "Ürün Yönetimi",
     TYPE: "Tipi",
-    THUMB_URL: "Görüntü Linki",
+    THUMB_URL: "Görsel",
     PRODUCT_TITLE: "Ürün İsmi",
     DESCRIPTION: "Açıklama",
     CAPTION: "Caption",
-    PRODUCT_CODE: "Ürün Kodu",
     UNIT_PRICE: "Fiyat",
     CATEGORY_KEY: "Kategori",
     GETIR_IMPORT_UPDATE_BTN: "Getir İçe aktar/Güncelle",
