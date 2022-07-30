@@ -8,7 +8,7 @@ import LoadPanel from "devextreme-react/load-panel";
 import { NavigationProvider } from "./contexts/navigation.context";
 import { AuthProvider, useAuth } from "./contexts/auth.context";
 import { useScreenSizeClass } from "./utils/media-query";
-import Content from "./content";
+import Content from "./Content";
 import UnauthenticatedContent from "./UnauthenticatedContent";
 import "./i18n/i18n";
 import config from "devextreme/core/config";
@@ -26,7 +26,7 @@ function App() {
     return <Content />;
   }
 
-  return <UnauthenticatedContent />;
+  return <UnauthenticatedContent />;       
 }
 
 export default function Root() {
