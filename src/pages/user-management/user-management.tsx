@@ -1,3 +1,4 @@
+
 import { DataGrid } from "devextreme-react";
 import {
   Column,
@@ -67,6 +68,11 @@ export default function UserManagement() {
             columnAutoWidth={true}
             remoteOperations={true}
             showBorders={true}
+            onEditorPreparing= {(e) => {
+              if (e.dataField === "password" && e.parentType === "dataRow"&& !e.row.isNewRow) {
+                e.editorOptions.value="*******";
+              }
+            }}
           >
             <Editing
               mode={"popup"}
@@ -127,6 +133,8 @@ export default function UserManagement() {
               dataField={"password"}
               caption={t("USER_MANAGEMENT.PASSWORD")}
               visible={false}
+
+              
             >
               <ValidationRule type={"required"} />
             </Column>
