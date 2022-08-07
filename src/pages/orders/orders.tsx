@@ -56,7 +56,7 @@ export default function Orders() {
       } else {
         setPlaying(false);
       }
-    }, 2000);
+    }, 10000);
     return () => clearInterval(currentInterval);
   });
 
