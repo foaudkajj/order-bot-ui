@@ -1,5 +1,5 @@
 import { DataGrid, DropDownButton, Form } from "devextreme-react";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Column,
@@ -17,8 +17,8 @@ import OrderService from "../../services/order.service";
 
 export default function Orders() {
   const { t } = useTranslation();
-  let audio = new Audio("../../assets/new-order.mp3");
-  audio.load();
+  const [audio] = useState(new Audio(require("../../assets/new-order.mp3")));
+  const [playing, setPlaying] = useState(false);
 
   const gridInstance = React.createRef<DataGrid>();
   const storeOption = {
@@ -52,12 +52,17 @@ export default function Orders() {
           ?.items()
           ?.some((s: any) => s.orderStatus === OrderStatus.UserConfirmed)
       ) {
-        audio.play();
+        setPlaying(true);
+      } else {
+        setPlaying(false);
       }
-
-      return () => clearInterval(currentInterval);
-    }, 10000);
+    }, 2000);
+    return () => clearInterval(currentInterval);
   });
+
+  useEffect(() => {
+    playing ? audio.play() : audio.pause();
+  }, [playing, audio]);
 
   const gridInitNewRow = (e: any) => {
     e.data.createDate = new Date();
