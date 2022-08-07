@@ -67,6 +67,11 @@ export default function UserManagement() {
             columnAutoWidth={true}
             remoteOperations={true}
             showBorders={true}
+            onEditorPreparing= {(e) => {
+              if (e.dataField === "password" && e.parentType === "dataRow"&& !e.row.isNewRow) {
+                e.editorOptions.value="*******";
+              }
+            }}
           >
             <Editing
               mode={"popup"}
