@@ -1,3 +1,4 @@
+
 import { DataGrid } from "devextreme-react";
 import {
   Column,
@@ -132,6 +133,8 @@ export default function UserManagement() {
               dataField={"password"}
               caption={t("USER_MANAGEMENT.PASSWORD")}
               visible={false}
+
+              
             >
               <ValidationRule type={"required"} />
             </Column>
