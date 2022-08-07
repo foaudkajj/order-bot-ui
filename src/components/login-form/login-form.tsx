@@ -33,6 +33,8 @@ export default function LoginForm() {
   // }, [navigate]);
 
   return (
+    <>
+    {process.env.REACT_APP_API_URL}
     <form className={"login-form"} onSubmit={onSubmit}>
       <Form formData={formData.current} disabled={loading}>
         <Item
@@ -87,6 +89,8 @@ export default function LoginForm() {
         </ButtonItem>
       </Form>
     </form>
+    </>
+    
   );
 }
 
