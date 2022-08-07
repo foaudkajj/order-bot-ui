@@ -9,6 +9,7 @@ import Form, {
 } from "devextreme-react/form";
 import LoadIndicator from "devextreme-react/load-indicator";
 import { useAuth } from "../../contexts/auth.context";
+import packageJson from '../../../package.json';
 
 import "./login-form.scss";
 
@@ -34,47 +35,50 @@ export default function LoginForm() {
 
   return (
     <>
-    {process.env.REACT_APP_API_URL}
-    <form className={"login-form"} onSubmit={onSubmit}>
-      <Form formData={formData.current} disabled={loading}>
-        <Item
-          dataField={"username"}
-          editorType={"dxTextBox"}
-          editorOptions={userNameEditorOptions}
-        >
-          <RequiredRule message="User name is required" />
-          <Label visible={false} />
-        </Item>
-        <Item
-          dataField={"password"}
-          editorType={"dxTextBox"}
-          editorOptions={passwordEditorOptions}
-        >
-          <RequiredRule message="Password is required" />
-          <Label visible={false} />
-        </Item>
-        {/* <Item
+      <form className={"login-form"} onSubmit={onSubmit}>
+        <Form formData={formData.current} disabled={loading}>
+          <Item
+            dataField={"username"}
+            editorType={"dxTextBox"}
+            editorOptions={userNameEditorOptions}
+          >
+            <RequiredRule message="User name is required" />
+            <Label visible={false} />
+          </Item>
+          <Item
+            dataField={"password"}
+            editorType={"dxTextBox"}
+            editorOptions={passwordEditorOptions}
+          >
+            <RequiredRule message="Password is required" />
+            <Label visible={false} />
+          </Item>
+          {/* <Item
           dataField={'rememberMe'}
           editorType={'dxCheckBox'}
           editorOptions={rememberMeEditorOptions}
         >
           <Label visible={false} />
         </Item> */}
-        <ButtonItem>
-          <ButtonOptions
-            width={"100%"}
-            type={"default"}
-            useSubmitBehavior={true}
-          >
-            <span className="dx-button-text">
-              {loading ? (
-                <LoadIndicator width={"24px"} height={"24px"} visible={true} />
-              ) : (
-                "Sign In"
-              )}
-            </span>
-          </ButtonOptions>
-          {/* </ButtonItem>
+          <ButtonItem>
+            <ButtonOptions
+              width={"100%"}
+              type={"default"}
+              useSubmitBehavior={true}
+            >
+              <span className="dx-button-text">
+                {loading ? (
+                  <LoadIndicator
+                    width={"24px"}
+                    height={"24px"}
+                    visible={true}
+                  />
+                ) : (
+                  "Sign In"
+                )}
+              </span>
+            </ButtonOptions>
+            {/* </ButtonItem>
         <Item>
           <div className={'link'}>
             <Link to={'/reset-password'}>Forgot password?</Link>
@@ -86,11 +90,16 @@ export default function LoginForm() {
             width={'100%'}
             onClick={onCreateAccountClick}
           />*/}
-        </ButtonItem>
-      </Form>
-    </form>
+          </ButtonItem>
+        </Form>
+      </form>
+      <div className="dx-field">
+        <div className="dx-field-label">Client version</div>
+        <div className="dx-field-value-static">
+          {packageJson.version}
+        </div>
+      </div>
     </>
-    
   );
 }
 
