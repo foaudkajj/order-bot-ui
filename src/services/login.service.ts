@@ -1,4 +1,4 @@
-import { LoginResponse } from "../pages/models";
+import { LoginResponse } from "../models";
 import AxiosService from "./axios.service";
 
 const login = async (payload: { username: string; password: string }) => {

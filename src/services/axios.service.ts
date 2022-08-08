@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import i18n from "i18next";
-import { UIResponse } from "../pages/models";
+import { UIResponse } from "../models";
 import ToastService from "./toast.service";
 
 

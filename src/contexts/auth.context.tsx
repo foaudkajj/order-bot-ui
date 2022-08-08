@@ -5,7 +5,7 @@ import React, {
   useCallback,
   useEffect,
 } from "react";
-import { LoginResponse } from "../pages/models";
+import { LoginResponse } from "../models";
 import { signIn as sendSignInRequest } from "../services/index";
 
 function AuthProvider(props) {

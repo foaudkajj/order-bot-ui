@@ -1,7 +1,7 @@
 import CustomStore from "devextreme/data/custom_store";
 import { createStore } from "devextreme-aspnet-data-nojquery";
 import ToastService from "./toast.service";
-import { DxStoreOptions, UIResponse } from "../pages/models";
+import { DxStoreOptions, UIResponse } from "../models";
 
 const getStore = (storeOptions: DxStoreOptions): CustomStore => {
   return createStore({

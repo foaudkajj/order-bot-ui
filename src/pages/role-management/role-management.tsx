@@ -12,7 +12,7 @@ import "devextreme/data/odata/store";
 import { useTranslation } from "react-i18next";
 import { Button, TreeList } from "devextreme-react";
 import { Selection } from "devextreme-react/tree-list";
-import { DxStoreOptions, RoleIdAndPermissions } from "../models";
+import { DxStoreOptions, RoleIdAndPermissions } from "../../models";
 import ToastService from "../../services/toast.service";
 import RoleService from "../../services/role.service";
 import PermissionService from "../../services/permission.service";

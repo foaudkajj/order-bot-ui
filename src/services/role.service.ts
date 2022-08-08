@@ -1,4 +1,4 @@
-import { RoleIdAndPermissions } from "../pages/models";
+import { RoleIdAndPermissions } from "../models";
 import AxiosService from "./axios.service";
 
 

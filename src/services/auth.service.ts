@@ -1,4 +1,4 @@
-import { LoginResponse, UIResponse } from "../pages/models";
+import { LoginResponse, UIResponse } from "../models";
 import LoginService from "./login.service";
 
 export async function signIn(

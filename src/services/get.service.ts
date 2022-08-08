@@ -1,4 +1,4 @@
-import { Category, Role } from "../pages/models";
+import { Category, Role } from "../models";
 import AxiosService from "./axios.service";
 
 const getRoles = async () => {

@@ -15,7 +15,7 @@ import { useTranslation } from "react-i18next";
 import DxStoreService from "../../services/dx-store.service";
 import GetService from "../../services/get.service";
 import PermissionService from "../../services/permission.service";
-import { Category, DxStoreOptions } from "../models";
+import { Category, DxStoreOptions } from "../../models";
 
 export default function Products() {
   const { t } = useTranslation();
