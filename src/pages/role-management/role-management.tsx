@@ -35,9 +35,18 @@ export default function RoleManagement() {
     deleteUrl: "Roles/Delete",
     deleteMethod: "POST",
     Key: "id",
-    onInserted: () => rolesGrid?.current?.instance.refresh(),
-    onRemoved: () => rolesGrid?.current?.instance.refresh(),
-    onUpdated: () => rolesGrid?.current?.instance.refresh(),
+    onInserted: () => {
+      rolesGrid?.current?.instance.refresh();
+      ToastService.showToast("success");
+    },
+    onRemoved: () => {
+      rolesGrid?.current?.instance.refresh();
+      ToastService.showToast("success");
+    },
+    onUpdated: () => {
+      rolesGrid?.current?.instance.refresh();
+      ToastService.showToast("success");
+    },
   };
   const store: CustomStore = DxStoreService.getStore(storeOptions);
 
@@ -182,7 +191,7 @@ const save = async (selectedRows: any, roleId: number) => {
     await RoleService.saveRolePermissions(roleIdAndPermissions);
     ToastService.showToast("success");
   } catch (e) {
-    ToastService.showToast("error",e?.message);
+    ToastService.showToast("error", e?.message);
     console.log(e);
   }
 };

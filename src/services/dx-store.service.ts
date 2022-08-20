@@ -20,16 +20,19 @@ const getStore = (storeOptions: DxStoreOptions): CustomStore => {
       }
     },
     onLoaded: (result: Array<any>) => {
-      if (storeOptions.onLoaded) storeOptions?.onLoaded(result);
+      if (storeOptions.onLoaded) {
+        storeOptions?.onLoaded(result);
+      }
     },
     onRemoved: (key) => {
       if (storeOptions.onRemoved) {
         storeOptions.onRemoved(key);
-      } else ToastService.showToast("success");
+      }
     },
     onUpdated: (key, values) => {
-      if (storeOptions.onUpdated) storeOptions.onUpdated(key, values);
-      else ToastService.showToast("success");
+      if (storeOptions.onUpdated) {
+        storeOptions.onUpdated(key, values);
+      }
     },
     onBeforeSend: (method, ajaxOptions) => {
       if (sessionStorage.getItem("Authorization")) {
