@@ -13,19 +13,13 @@ export async function signIn(
       password: password,
     });
 
-    return result ?? errorResponse;
-  } catch {
-    return errorResponse;
+    return result;
+  } catch (e) {
+    throw e;
   }
 }
 
 const AuthService = {
   signIn,
-};
-
-const errorResponse = {
-  statusCode: 500,
-  isError: true,
-  messageKey: "ERROR",
 };
 export default AuthService;

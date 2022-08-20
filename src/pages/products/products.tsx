@@ -72,6 +72,23 @@ export default function Products() {
     }
   };
 
+  const thumbUploaderTemplate = (e: any) => {
+    const blobUrl = process.env.REACT_APP_BLOB_URL;
+    return (
+      <>
+        {e.data.thumbUrl ? (
+          <img
+            src={blobUrl + e.data.thumbUrl}
+            alt={e.data.title}
+            style={{ width: "40px" }}
+          />
+        ) : (
+          ""
+        )}
+      </>
+    );
+  };
+
   const toolTipContent = (data) => {
     return <span>Hello</span>;
   };
@@ -170,19 +187,6 @@ export default function Products() {
     </React.Fragment>
   );
 }
-
-const thumbUploaderTemplate = (e: any) => {
-  const blobUrl = process.env.REACT_APP_BLOB_URL;
-  return (
-    <>
-      <img
-        src={blobUrl + e.data.thumbUrl}
-        alt={e.data.title}
-        style={{ width: "40px" }}
-      />
-    </>
-  );
-};
 
 const thumbUploaderEditTemplate = (eTemplate: any) => {
   const thumbUploaded = (e) => {

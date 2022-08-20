@@ -28,10 +28,10 @@ function AuthProvider(props) {
   const signIn = useCallback(async (username, password) => {
     setLoading(true);
     const result = await sendSignInRequest(username, password);
-    if (result?.result?.isAuthenticated) {
-      setUser(result.result);
-      sessionStorage.setItem("Authorization", result.result.token);
-      localStorage.setItem("user", JSON.stringify(result.result));
+    if (result?.data?.isAuthenticated) {
+      setUser(result.data);
+      sessionStorage.setItem("Authorization", result.data.token);
+      localStorage.setItem("user", JSON.stringify(result.data));
     } else {
       setUser(null);
     }

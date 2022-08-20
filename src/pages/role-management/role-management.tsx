@@ -39,8 +39,7 @@ export default function RoleManagement() {
     onRemoved: () => rolesGrid?.current?.instance.refresh(),
     onUpdated: () => rolesGrid?.current?.instance.refresh(),
   };
-  const store: CustomStore =
-    DxStoreService.getStore(storeOptions);
+  const store: CustomStore = DxStoreService.getStore(storeOptions);
 
   useEffect(() => {
     PermissionService.getPermissions().then((UIPermissions) => {
@@ -174,14 +173,16 @@ const MasterDetailTemplate = (role) => {
   );
 };
 
-const save = (selectedRows: any, roleId: number) => {
+const save = async (selectedRows: any, roleId: number) => {
   const roleIdAndPermissions: RoleIdAndPermissions = {
     roleId: roleId,
     rolePermissions: selectedRows.map((mp) => mp.id),
   };
-  RoleService.saveRolePermissions(roleIdAndPermissions).then((t) => {
-    t.isError
-      ? ToastService.showToast("error")
-      : ToastService.showToast("success");
-  });
+  try {
+    await RoleService.saveRolePermissions(roleIdAndPermissions);
+    ToastService.showToast("success");
+  } catch (e) {
+    ToastService.showToast("error",e?.message);
+    console.log(e);
+  }
 };
