@@ -1,7 +1,7 @@
 import CustomStore from "devextreme/data/custom_store";
 import { createStore } from "devextreme-aspnet-data-nojquery";
 import ToastService from "./toast.service";
-import { DxStoreOptions, UIResponse } from "../pages/models";
+import { DxStoreOptions, UIResponse } from "../models";
 
 const getStore = (storeOptions: DxStoreOptions): CustomStore => {
   return createStore({
@@ -15,8 +15,9 @@ const getStore = (storeOptions: DxStoreOptions): CustomStore => {
     deleteMethod: storeOptions.deleteMethod,
     loadMode: storeOptions.loadMode,
     onInserted: (values: UIResponse<any>, key) => {
-      if (storeOptions.onInserted) storeOptions.onInserted(values, key);
-      else if (!values.isError) ToastService.showToast("success");
+      if (storeOptions.onInserted) {
+        storeOptions.onInserted(values, key);
+      }
     },
     onLoaded: (result: Array<any>) => {
       if (storeOptions.onLoaded) storeOptions?.onLoaded(result);

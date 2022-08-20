@@ -1,5 +1,4 @@
 import React, { useState, useRef, useCallback } from "react";
-// import { Link, useNavigate } from 'react-router-dom';
 import Form, {
   Item,
   Label,
@@ -9,14 +8,17 @@ import Form, {
 } from "devextreme-react/form";
 import LoadIndicator from "devextreme-react/load-indicator";
 import { useAuth } from "../../contexts/auth.context";
-import packageJson from '../../../package.json';
+import packageJson from "../../../package.json";
 
 import "./login-form.scss";
+import { useEffect } from "react";
+import GetService from "../../services/get.service";
 
 export default function LoginForm() {
   // const navigate = useNavigate();
   const { signIn } = useAuth();
   const [loading] = useState(false);
+  const [serverVersion, setServerVersion] = useState("");
   const formData = useRef({ username: "", password: "" });
 
   const onSubmit = useCallback(
@@ -29,6 +31,11 @@ export default function LoginForm() {
     [signIn]
   );
 
+  useEffect(() => {
+    GetService.getBackendVersion().then((version) => {
+      setServerVersion(version.data);
+    });
+  }, []);
   // const onCreateAccountClick = useCallback(() => {
   //   navigate('/create-account');
   // }, [navigate]);
@@ -93,10 +100,18 @@ export default function LoginForm() {
           </ButtonItem>
         </Form>
       </form>
-      <div className="dx-field">
-        <div className="dx-field-label">Client version</div>
-        <div className="dx-field-value-static">
-          {packageJson.version}
+      <div>
+        <div className="dx-field" style={{ margin: "0px" }}>
+          <div className="dx-field-label">Client version</div>
+          <div className="dx-field-value-static" style={{ padding: "0px" }}>
+            {packageJson.version}
+          </div>
+        </div>
+        <div className="dx-field">
+          <div className="dx-field-label">Server version</div>
+          <div className="dx-field-value-static" style={{ padding: "0px" }}>
+            {serverVersion}
+          </div>
         </div>
       </div>
     </>

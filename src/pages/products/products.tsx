@@ -15,7 +15,7 @@ import { useTranslation } from "react-i18next";
 import DxStoreService from "../../services/dx-store.service";
 import GetService from "../../services/get.service";
 import PermissionService from "../../services/permission.service";
-import { Category, DxStoreOptions } from "../models";
+import { Category, DxStoreOptions } from "../../models";
 
 export default function Products() {
   const { t } = useTranslation();
@@ -70,6 +70,23 @@ export default function Products() {
     if (e.parentType === "dataRow" && e.dataField === "description") {
       e.editorName = "dxTextArea";
     }
+  };
+
+  const thumbUploaderTemplate = (e: any) => {
+    const blobUrl = process.env.REACT_APP_BLOB_URL;
+    return (
+      <>
+        {e.data.thumbUrl ? (
+          <img
+            src={blobUrl + e.data.thumbUrl}
+            alt={e.data.title}
+            style={{ width: "40px" }}
+          />
+        ) : (
+          ""
+        )}
+      </>
+    );
   };
 
   const toolTipContent = (data) => {
@@ -170,19 +187,6 @@ export default function Products() {
     </React.Fragment>
   );
 }
-
-const thumbUploaderTemplate = (e: any) => {
-  const blobUrl = process.env.REACT_APP_BLOB_URL;
-  return (
-    <>
-      <img
-        src={blobUrl + e.data.thumbUrl}
-        alt={e.data.title}
-        style={{ width: "40px" }}
-      />
-    </>
-  );
-};
 
 const thumbUploaderEditTemplate = (eTemplate: any) => {
   const thumbUploaded = (e) => {

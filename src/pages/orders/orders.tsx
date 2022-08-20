@@ -9,7 +9,7 @@ import {
 } from "devextreme-react/data-grid";
 import DataSource from "devextreme/data/data_source";
 import { Item } from "devextreme-react/form";
-import { DeliveryType, OrderStatus } from "../models";
+import { DeliveryType, OrderStatus } from "../../models";
 import { useTranslation } from "react-i18next";
 import ToastService from "../../services/toast.service";
 import DxStoreService from "../../services/dx-store.service";

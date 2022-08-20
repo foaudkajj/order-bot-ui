@@ -11,10 +11,11 @@ import {
 import CustomStore from "devextreme/data/custom_store";
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { DxStoreOptions, Role } from "../../models";
 import DxStoreService from "../../services/dx-store.service";
 import GetService from "../../services/get.service";
 import PermissionService from "../../services/permission.service";
-import { DxStoreOptions, Role } from "../models";
+
 
 const UserStatus = [
   { id: 1, name: "Aktif" },

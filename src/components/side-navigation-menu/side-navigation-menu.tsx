@@ -6,8 +6,8 @@ import "./side-navigation-menu.scss";
 import { useTranslation } from "react-i18next";
 
 import * as events from "devextreme/events";
-import { LoginResponse } from "../../pages/models";
 import query from "devextreme/data/query";
+import { LoginResponse } from "../../models";
 
 export default function SideNavigationMenu(props) {
   const { children, selectedItemChanged, openMenu, compactMode, onMenuReady } =

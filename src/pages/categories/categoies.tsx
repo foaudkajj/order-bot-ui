@@ -11,7 +11,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import DxStoreService from "../../services/dx-store.service";
 import PermissionService from "../../services/permission.service";
-import { DxStoreOptions } from "../models";
+import { DxStoreOptions } from "../../models";
 
 export default function Categories() {
   const { t } = useTranslation();
