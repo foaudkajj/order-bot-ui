@@ -1,4 +1,3 @@
-
 import { DataGrid } from "devextreme-react";
 import {
   Column,
@@ -15,7 +14,7 @@ import { DxStoreOptions, Role } from "../../models";
 import DxStoreService from "../../services/dx-store.service";
 import GetService from "../../services/get.service";
 import PermissionService from "../../services/permission.service";
-
+import ToastService from "../../services/toast.service";
 
 const UserStatus = [
   { id: 1, name: "Aktif" },
@@ -39,15 +38,24 @@ export default function UserManagement() {
     deleteUrl: "User/Delete",
     deleteMethod: "POST",
     Key: "id",
-    onInserted: () => usersGrid?.current?.instance?.refresh(),
-    onRemoved: () => usersGrid?.current?.instance?.refresh(),
-    onUpdated: () => usersGrid?.current?.instance?.refresh(),
+    onInserted: () => {
+      usersGrid?.current?.instance?.refresh();
+      ToastService.showToast("success");
+    },
+    onRemoved: () => {
+      usersGrid?.current?.instance?.refresh();
+      ToastService.showToast("success");
+    },
+    onUpdated: () => {
+      usersGrid?.current?.instance?.refresh();
+      ToastService.showToast("success");
+    },
   };
   const store: CustomStore = DxStoreService.getStore(storeOption);
 
   useEffect(() => {
     GetService.getRoles().then((roles) => {
-      setRoles(roles.data)
+      setRoles(roles.data);
     });
     PermissionService.getPermissions().then((UIPermissions) => {
       setAllowAdd(UIPermissions.includes("ADD_USER"));
@@ -69,9 +77,13 @@ export default function UserManagement() {
             columnAutoWidth={true}
             remoteOperations={true}
             showBorders={true}
-            onEditorPreparing= {(e) => {
-              if (e.dataField === "password" && e.parentType === "dataRow"&& !e.row.isNewRow) {
-                e.editorOptions.value="*******";
+            onEditorPreparing={(e) => {
+              if (
+                e.dataField === "password" &&
+                e.parentType === "dataRow" &&
+                !e.row.isNewRow
+              ) {
+                e.editorOptions.value = "*******";
               }
             }}
           >
@@ -134,8 +146,6 @@ export default function UserManagement() {
               dataField={"password"}
               caption={t("USER_MANAGEMENT.PASSWORD")}
               visible={false}
-
-              
             >
               <ValidationRule type={"required"} />
             </Column>

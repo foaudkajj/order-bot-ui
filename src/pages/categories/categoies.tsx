@@ -12,6 +12,7 @@ import { useTranslation } from "react-i18next";
 import DxStoreService from "../../services/dx-store.service";
 import PermissionService from "../../services/permission.service";
 import { DxStoreOptions } from "../../models";
+import ToastService from "../../services/toast.service";
 
 export default function Categories() {
   const { t } = useTranslation();
@@ -29,9 +30,18 @@ export default function Categories() {
     deleteUrl: "Category/Delete",
     deleteMethod: "POST",
     Key: "id",
-    onInserted: () => categoriesGrid?.current?.instance?.refresh(),
-    onRemoved: () => categoriesGrid?.current?.instance?.refresh(),
-    onUpdated: () => categoriesGrid?.current?.instance?.refresh(),
+    onInserted: () => {
+      categoriesGrid?.current?.instance?.refresh();
+      ToastService.showToast("success");
+    },
+    onRemoved: () => {
+      categoriesGrid?.current?.instance?.refresh();
+      ToastService.showToast("success");
+    },
+    onUpdated: () => {
+      categoriesGrid?.current?.instance?.refresh();
+      ToastService.showToast("success");
+    },
   };
   const store: CustomStore = DxStoreService.getStore(storeOption);
 

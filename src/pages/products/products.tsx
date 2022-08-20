@@ -16,6 +16,7 @@ import DxStoreService from "../../services/dx-store.service";
 import GetService from "../../services/get.service";
 import PermissionService from "../../services/permission.service";
 import { Category, DxStoreOptions } from "../../models";
+import ToastService from "../../services/toast.service";
 
 export default function Products() {
   const { t } = useTranslation();
@@ -35,9 +36,18 @@ export default function Products() {
     deleteUrl: "Products/Delete",
     deleteMethod: "POST",
     Key: "id",
-    onInserted: () => productsGrid?.current?.instance?.refresh(),
-    onRemoved: () => productsGrid?.current?.instance?.refresh(),
-    onUpdated: () => productsGrid?.current?.instance?.refresh(),
+    onInserted: () => {
+      productsGrid?.current?.instance?.refresh();
+      ToastService.showToast("success");
+    },
+    onRemoved: () => {
+      productsGrid?.current?.instance?.refresh();
+      ToastService.showToast("success");
+    },
+    onUpdated: () => {
+      productsGrid?.current?.instance?.refresh();
+      ToastService.showToast("success");
+    },
   };
   const store: CustomStore = DxStoreService.getStore(storeOption);
 
