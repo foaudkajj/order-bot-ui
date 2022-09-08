@@ -117,6 +117,8 @@ export const en = {
       PRODUCT_NOTE: "Product note",
       ONLINE: "Online",
       ON_DELIVERY: "On delivery",
+      CANCEL_REASON: "Cancel reason",
+      ENTER_REASON: "Please enter cancel reason",
       ORDER_OPERATION_BUTTONS: {
         CONFIRM_ORDER: "Confirm",
         READY: "Order ready",
@@ -125,7 +127,7 @@ export const en = {
         DELIVERED: "Order delivered.",
         FUTURE_ORDER_CONFIRMED: "Future order confirmed",
         CONFIRM_FUTURE_ORDER: "Confirm future order",
-        CANELED: "Order canceled",
+        CANCELED: "Order canceled",
       },
       CUSTOMER: {
         ID: "Kullanıcı Id",

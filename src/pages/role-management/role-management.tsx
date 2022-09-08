@@ -47,6 +47,11 @@ export default function RoleManagement() {
       rolesGrid?.current?.instance.refresh();
       ToastService.showToast("success");
     },
+    errorHandler: (e) => {
+      if (e) {
+        e.message = t(e?.message);
+      }
+    },
   };
   const store: CustomStore = DxStoreService.getStore(storeOptions);
 
@@ -67,7 +72,6 @@ export default function RoleManagement() {
             ref={rolesGrid}
             allowColumnResizing={true}
             columnAutoWidth={true}
-            remoteOperations={true}
             dataSource={store}
             showBorders={true}
           >

@@ -118,6 +118,8 @@ export const tr = {
     PRODUCT_NOTE: "Ürün Notu",
     ONLINE: "Online",
     ON_DELIVERY: "Kapıda",
+    CANCEL_REASON: "İptal sebebi",
+    ENTER_REASON: "Lütfen ürünü iptal sebebini giriniz",
     ORDER_OPERATION_BUTTONS: {
       CONFIRM_ORDER: "Onayla",
       READY: "Hazırlandı",
@@ -126,7 +128,7 @@ export const tr = {
       DELIVERED: "Müşteriye teslim edildi",
       FUTURE_ORDER_CONFIRMED: "İleri tarihli sipariş onaylandı",
       CONFIRM_FUTURE_ORDER: "İleri tarihli siparişi onayla",
-      CANELED: "İptal edildi",
+      CANCELED: "İptal edildi",
     },
     CUSTOMER: {
       ID: "Telegram Kullanıcı Id",

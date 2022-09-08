@@ -1,6 +1,5 @@
 import CustomStore from "devextreme/data/custom_store";
 import { createStore } from "devextreme-aspnet-data-nojquery";
-import ToastService from "./toast.service";
 import { DxStoreOptions, UIResponse } from "../models";
 
 const getStore = (storeOptions: DxStoreOptions): CustomStore => {
@@ -42,7 +41,11 @@ const getStore = (storeOptions: DxStoreOptions): CustomStore => {
       }
       return storeOptions.OnBeforeSend;
     },
-    errorHandler: (e: Error) => ToastService.showToast("error"),
+    errorHandler: (e: Error) => {
+      if (storeOptions.errorHandler) {
+        storeOptions.errorHandler(e);
+      }
+    },
   });
 };
 
