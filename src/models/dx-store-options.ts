@@ -11,7 +11,8 @@ export class DxStoreOptions {
   onInserted?: (values: any, key: any) => void;
   onRemoved?: (key: any) => void;
   onUpdated?: (key: any, values: any) => void;
-  loadMode?: 'processed' | 'raw';
+  errorHandler?: (e: Error) => void;
+  loadMode?: "processed" | "raw";
   OnBeforeSend?: (
     operation: string,
     ajaxSettings: {
@@ -28,6 +29,6 @@ export class DxStoreOptions {
       url?: string;
       username?: string;
       xhrFields?: {};
-    },
+    }
   ) => void;
 }

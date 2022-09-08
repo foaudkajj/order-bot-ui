@@ -50,6 +50,11 @@ export default function UserManagement() {
       usersGrid?.current?.instance?.refresh();
       ToastService.showToast("success");
     },
+    errorHandler: (e) => {
+      if (e) {
+        e.message = t(e?.message);
+      }
+    },
   };
   const store: CustomStore = DxStoreService.getStore(storeOption);
 
@@ -75,7 +80,6 @@ export default function UserManagement() {
             dataSource={store}
             allowColumnResizing={true}
             columnAutoWidth={true}
-            remoteOperations={true}
             showBorders={true}
             onEditorPreparing={(e) => {
               if (

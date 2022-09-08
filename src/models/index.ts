@@ -6,3 +6,4 @@ export * from "./role";
 export * from "./category";
 export * from "./product";
 export * from "./requests/role-id-and-permissions";
+export * from "./requests/cancel-order.request";

@@ -48,6 +48,11 @@ export default function Products() {
       productsGrid?.current?.instance?.refresh();
       ToastService.showToast("success");
     },
+    errorHandler: (e) => {
+      if (e) {
+        e.message = t(e?.message);
+      }
+    },
   };
   const store: CustomStore = DxStoreService.getStore(storeOption);
 
@@ -113,7 +118,6 @@ export default function Products() {
             dataSource={store}
             allowColumnResizing={true}
             columnAutoWidth={true}
-            remoteOperations={true}
             showBorders={true}
             wordWrapEnabled={true}
             onEditorPreparing={gridEditorPreparing}
@@ -167,6 +171,7 @@ export default function Products() {
             <Column
               dataField={"categoryId"}
               caption={t("PRODUCT.CATEGORY_KEY")}
+              groupIndex={1}
             >
               <Lookup
                 dataSource={categoryList}

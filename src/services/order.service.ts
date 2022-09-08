@@ -1,7 +1,8 @@
+import { CancelOrderRequest } from "../models";
 import AxiosService from "./axios.service";
 
-const cancelOrder = async (orderId: string) => {
-  return AxiosService.get<void>(`Orders/Cancel/${orderId}`);
+const cancelOrder = async (cancelOrder: CancelOrderRequest) => {
+  return AxiosService.post<void>(`Orders/Cancel`, cancelOrder);
 };
 
 const OrderService = {

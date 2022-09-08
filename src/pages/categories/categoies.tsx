@@ -2,7 +2,6 @@ import { DataGrid } from "devextreme-react";
 import {
   Column,
   Editing,
-  Popup,
   Scrolling,
   ValidationRule,
 } from "devextreme-react/data-grid";
@@ -13,6 +12,7 @@ import DxStoreService from "../../services/dx-store.service";
 import PermissionService from "../../services/permission.service";
 import { DxStoreOptions } from "../../models";
 import ToastService from "../../services/toast.service";
+import { turkishToLower } from "../../shared/utils";
 
 export default function Categories() {
   const { t } = useTranslation();
@@ -42,6 +42,11 @@ export default function Categories() {
       categoriesGrid?.current?.instance?.refresh();
       ToastService.showToast("success");
     },
+    errorHandler: (e) => {
+      if (e) {
+        e.message = t(e?.message);
+      }
+    },
   };
   const store: CustomStore = DxStoreService.getStore(storeOption);
 
@@ -52,6 +57,18 @@ export default function Categories() {
       setAllowUpdate(UIPermissions.includes("UPDATE_CATEGORY"));
     });
   }, []);
+
+  const onRowInserting = (e) => {
+    e.data.categoryKey = turkishToLower(e.data.name)
+      .trim()
+      .replace(new RegExp(" ", "g"), "_");
+  };
+
+  const onRowUpdating = (e) => {
+    e.newData.categoryKey = turkishToLower(e.newData.name)
+      .trim()
+      .replace(new RegExp(" ", "g"), "_");
+  };
 
   return (
     <React.Fragment>
@@ -64,17 +81,16 @@ export default function Categories() {
             dataSource={store}
             allowColumnResizing={true}
             columnAutoWidth={true}
-            remoteOperations={true}
             showBorders={true}
+            onRowInserting={onRowInserting}
+            onRowUpdating={onRowUpdating}
           >
             <Editing
               mode={"popup"}
               allowAdding={allowAdd}
               allowDeleting={allowDelete}
               allowUpdating={allowUpdate}
-            >
-              <Popup width={"auto"} height={"auto"} />
-            </Editing>
+            ></Editing>
             <Scrolling columnRenderingMode={"virtual"} />
 
             <Column
@@ -92,6 +108,8 @@ export default function Categories() {
             <Column
               dataField={"categoryKey"}
               caption={t("CATEGORY.CATEGORY_KEY")}
+              visible={false}
+              formItem={{ visible: false }}
             >
               <ValidationRule type={"required"} />
             </Column>
