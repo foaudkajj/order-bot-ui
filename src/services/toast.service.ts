@@ -2,7 +2,7 @@ import i18n from "i18next";
 import notify from "devextreme/ui/notify";
 
 const showToast = async (
-  status: "success" | "error",
+  status: "error" | "info" | "success" | "warning",
   text: string = undefined,
   timer: number = 3000
 ) => {
