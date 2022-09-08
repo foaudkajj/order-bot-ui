@@ -1,4 +1,4 @@
-import { DataGrid, FileUploader, Tooltip } from "devextreme-react";
+import { DataGrid, FileUploader } from "devextreme-react";
 import {
   Column,
   Editing,
@@ -22,10 +22,10 @@ export default function Products() {
   const { t } = useTranslation();
 
   const [categoryList, setCategoryList] = useState<Category[]>([]);
-  const [tooltipVisible, setTooltipVisibility] = useState<boolean>(false);
   const [allowAdd, setAllowAdd] = useState<boolean>(false);
   const [allowDelete, setAllowDelete] = useState<boolean>(false);
   const [allowUpdate, setAllowUpdate] = useState<boolean>(false);
+  let isUploading = false;
 
   const productsGrid = useRef(null);
   const storeOption: DxStoreOptions = {
@@ -72,16 +72,6 @@ export default function Products() {
   };
 
   const gridEditorPreparing = (e) => {
-    if (e.dataField === "type" && e.parentType === "dataRow") {
-      e.editorOptions.disabled = true;
-      e.editorOptions.value = "article";
-      e.editorElement.id = "productType";
-      e.editorElement.addEventListener("mouseenter", (e) => {
-        setTooltipVisibility(!tooltipVisible);
-      });
-      e.setValue(e.editorOptions.value);
-    }
-
     if (e.parentType === "dataRow" && e.dataField === "description") {
       e.editorName = "dxTextArea";
     }
@@ -104,9 +94,17 @@ export default function Products() {
     );
   };
 
-  const toolTipContent = (data) => {
-    return <span>Hello</span>;
+  const setIsUploading = (value: boolean) => {
+    isUploading = value;
   };
+
+  const onRowSaving = (e) => {
+    if (isUploading) {
+      ToastService.showToast("warning", t("PRODUCTS.WAIT_IMAGE_UPLOAD"));
+    }
+    e.cancel = isUploading;
+  };
+
   return (
     <React.Fragment>
       <h2 className={"content-block"}>{t("CATEGORY.TITLE")}</h2>
@@ -122,6 +120,7 @@ export default function Products() {
             wordWrapEnabled={true}
             onEditorPreparing={gridEditorPreparing}
             onInitNewRow={onInitNewRow}
+            onSaving={onRowSaving}
           >
             <Editing
               mode={"popup"}
@@ -164,6 +163,7 @@ export default function Products() {
             <Column
               dataField={"description"}
               caption={t("PRODUCT.DESCRIPTION")}
+              editorOptions={{ autoResizeEnabled: true }}
             >
               <ValidationRule type={"required"} />
             </Column>
@@ -184,7 +184,9 @@ export default function Products() {
             <Column
               dataField={"thumbUrl"}
               caption={t("PRODUCT.THUMB_URL")}
-              editCellRender={thumbUploaderEditTemplate}
+              editCellRender={(e) => {
+                return thumbUploaderEditTemplate(e, setIsUploading);
+              }}
               cellRender={thumbUploaderTemplate}
               width={100}
               formItem={{ colSpan: 2 }}
@@ -192,30 +194,36 @@ export default function Products() {
           </DataGrid>
         </div>
       </div>
-
-      <Tooltip
-        target={"#productType"}
-        visible={tooltipVisible}
-        closeOnOutsideClick={false}
-        contentTemplate={toolTipContent}
-      ></Tooltip>
     </React.Fragment>
   );
 }
 
-const thumbUploaderEditTemplate = (eTemplate: any) => {
+const token = sessionStorage.getItem("Authorization");
+const uploadHeaders = {
+  Authorization: "Bearer " + token,
+};
+const uploadUrl = `${process.env.REACT_APP_API_URL}Products/upload`;
+
+const thumbUploaderEditTemplate = (
+  eTemplate: any,
+  setIsUploading: (value: boolean) => void
+) => {
   const thumbUploaded = (e) => {
     eTemplate.setValue(e.file.name);
   };
 
-  const token = sessionStorage.getItem("Authorization");
-  const uploadHeaders = {
-    Authorization: "Bearer " + token,
+  const uploadImageStarted = (e) => {
+    setIsUploading(true);
   };
-  const uploadUrl = `${process.env.REACT_APP_API_URL}Products/upload`;
+
+  const uploadImageUploaded = (e) => {
+    setIsUploading(false);
+  };
   return (
     <>
       <FileUploader
+        onUploadStarted={uploadImageStarted}
+        onFilesUploaded={uploadImageUploaded}
         multiple={false}
         accept="image/*"
         uploadMode="instantly"
