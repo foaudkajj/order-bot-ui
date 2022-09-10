@@ -13,6 +13,8 @@ import packageJson from "../../../package.json";
 import "./login-form.scss";
 import { useEffect } from "react";
 import GetService from "../../services/get.service";
+import ToastService from "../../services/toast.service";
+import { useTranslation } from "react-i18next";
 
 export default function LoginForm() {
   // const navigate = useNavigate();
@@ -20,13 +22,17 @@ export default function LoginForm() {
   const [loading] = useState(false);
   const [serverVersion, setServerVersion] = useState("");
   const formData = useRef({ username: "", password: "" });
+  const { t } = useTranslation();
 
   const onSubmit = useCallback(
     async (e) => {
       e.preventDefault();
       const { username, password } = formData.current;
 
-      await signIn(username, password);
+      const signInRes = await signIn(username, password);
+      if (!signInRes) {
+        ToastService.showToast("error", t("LOGIN.WRNOG_LOGIN_CREDENTIALS"));
+      }
     },
     [signIn]
   );

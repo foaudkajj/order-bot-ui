@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import { LoginResponse, UIResponse } from "../models";
 import LoginService from "./login.service";
 
@@ -15,6 +16,11 @@ export async function signIn(
 
     return result;
   } catch (e) {
+    if (e instanceof AxiosError) {
+      if (e.response.status === 401) {
+        return undefined;
+      }
+    }
     throw e;
   }
 }
