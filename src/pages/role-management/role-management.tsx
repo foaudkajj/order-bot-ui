@@ -123,7 +123,7 @@ const MasterDetailTemplate = (role) => {
     });
 
     const permissionsListStoreOption: DxStoreOptions = {
-      loadUrl: "Roles/GetPermissions",
+      loadUrl: "Roles/get-permissions",
       Key: "permissionKey",
       onInserted: () => permissionsTree?.current?.instance.refresh(),
       onRemoved: () => permissionsTree?.current?.instance.refresh(),

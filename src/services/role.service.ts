@@ -6,7 +6,7 @@ const saveRolePermissions = (
     roleIdAndPermissions: RoleIdAndPermissions,
 ) => {
     let result$ = AxiosService.post<any>(
-        `Roles/SaveRolePermissions`,
+        `Roles/save-role-permissions`,
         roleIdAndPermissions,
     );
     return result$;
