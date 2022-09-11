@@ -34,7 +34,7 @@ export default function LoginForm() {
         ToastService.showToast("error", t("LOGIN.WRNOG_LOGIN_CREDENTIALS"));
       }
     },
-    [signIn]
+    [signIn, t]
   );
 
   useEffect(() => {
@@ -55,7 +55,7 @@ export default function LoginForm() {
             editorType={"dxTextBox"}
             editorOptions={userNameEditorOptions}
           >
-            <RequiredRule message="User name is required" />
+            <RequiredRule message={t("LOGIN.USER_NAME_REQUIRED")} />
             <Label visible={false} />
           </Item>
           <Item
@@ -63,7 +63,7 @@ export default function LoginForm() {
             editorType={"dxTextBox"}
             editorOptions={passwordEditorOptions}
           >
-            <RequiredRule message="Password is required" />
+            <RequiredRule message={t("LOGIN.PASSWORD_REQUIRED")} />
             <Label visible={false} />
           </Item>
           {/* <Item
@@ -87,11 +87,12 @@ export default function LoginForm() {
                     visible={true}
                   />
                 ) : (
-                  "Sign In"
+                  t("LOGIN.TITLE")
                 )}
               </span>
             </ButtonOptions>
-            {/* </ButtonItem>
+            {/*
+             </ButtonItem>
         <Item>
           <div className={'link'}>
             <Link to={'/reset-password'}>Forgot password?</Link>

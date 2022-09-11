@@ -2,9 +2,6 @@ export const en = {
   TRANSLATOR: {
     SELECT: "Dil Seçiniz ...",
   },
-  MENU: {
-    SELLING: "Satış İşlemleri",
-  },
   COMMON: {
     ADD: "Ekle",
     SEARCH: "Ara ...",
@@ -14,6 +11,9 @@ export const en = {
     APP_NAME: "Order bot",
   },
   LOGIN: {
+    TITLE: "Login",
+    USER_NAME_REQUIRED: "User name is required",
+    PASSWORD_REQUIRED: "Password is required",
     LOGIN_TITLE: "Lütfen Giriş Yapınız",
     LOGIN_BUTTON: "Giriş Yap",
     WRNOG_LOGIN_CREDENTIALS: "Girdiğiniz K. Adı veya Şifre Yanlıştır.",

@@ -2,9 +2,6 @@ export const tr = {
   TRANSLATOR: {
     SELECT: "Dil Seçiniz ...",
   },
-  MENU: {
-    SELLING: "Satış İşlemleri",
-  },
   COMMON: {
     ADD: "Ekle",
     SEARCH: "Ara ...",
@@ -15,6 +12,9 @@ export const tr = {
     APP_NAME: "Sipariş Botu",
   },
   LOGIN: {
+    TITLE: "Giriş yap",
+    USER_NAME_REQUIRED: "K. adı zorunlu",
+    PASSWORD_REQUIRED: "Şifre zorunlu",
     LOGIN_TITLE: "Lütfen Giriş Yapınız",
     LOGIN_BUTTON: "Giriş Yap",
     WRNOG_LOGIN_CREDENTIALS: "Girdiğiniz K. Adı veya Şifre Yanlıştır.",
