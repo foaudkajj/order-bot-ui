@@ -3,13 +3,11 @@ export const tr = {
     SELECT: "Dil Seçiniz ...",
   },
   COMMON: {
-    ADD: "Ekle",
-    SEARCH: "Ara ...",
-    START_DATE: "Başlangıç Tarihi",
-    END_DATE: "Bitiş Tarihi",
-    PLEASE_SELECT: "Lütfen Seçiniz ...",
-    SAVE: "Kaydet",
     APP_NAME: "Sipariş Botu",
+  },
+  ERROR: {
+    REFERENCE_ERROR: "Bu kayıt başka bir yerde kullanılmaktadır.",
+    CATEGORY_KEY_EXISTS: "Bu kategori daha önce kullanılmıştır.",
   },
   LOGIN: {
     TITLE: "Giriş yap",
