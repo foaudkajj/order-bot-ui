@@ -3,12 +3,11 @@ export const en = {
     SELECT: "Dil Seçiniz ...",
   },
   COMMON: {
-    ADD: "Ekle",
-    SEARCH: "Ara ...",
-    START_DATE: "Başlangıç Tarihi",
-    END_DATE: "Bitiş Tarihi",
-    PLEASE_SELECT: "Lütfen Seçiniz ...",
     APP_NAME: "Order bot",
+  },
+  ERROR: {
+    REFERENCE_ERROR: "The row is used in a different place.",
+    CATEGORY_KEY_EXISTS: "Bu kategori daha önce kullanılmıştır.",
   },
   LOGIN: {
     TITLE: "Login",
