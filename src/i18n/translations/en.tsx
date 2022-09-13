@@ -44,6 +44,8 @@ export const en = {
     EMAIL: "E-posta",
     ROLE: "K. Yetkisi",
     USER_NAME: "K. Adı",
+    USER_NAME_VALIDATION:
+      "Can contain only small letters, number, period and underscore.",
   },
   NAV: {
     DASHBOARD: "Home",

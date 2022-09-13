@@ -3,7 +3,9 @@ import {
   Column,
   Editing,
   Lookup,
+  PatternRule,
   Popup,
+  RequiredRule,
   Scrolling,
   ValidationRule,
 } from "devextreme-react/data-grid";
@@ -110,14 +112,14 @@ export default function UserManagement() {
             />
 
             <Column dataField={"name"} caption={t("USER_MANAGEMENT.NAME")}>
-              <ValidationRule type={"required"} />
+              <RequiredRule />
             </Column>
 
             <Column
               dataField={"lastName"}
               caption={t("USER_MANAGEMENT.LASTNAME")}
             >
-              <ValidationRule type={"required"} />
+              <RequiredRule />
             </Column>
 
             <Column
@@ -131,7 +133,11 @@ export default function UserManagement() {
               dataField={"userName"}
               caption={t("USER_MANAGEMENT.USER_NAME")}
             >
-              <ValidationRule type={"required"} />
+              <RequiredRule />
+              <PatternRule
+                message={t("USER_MANAGEMENT.USER_NAME_VALIDATION")}
+                pattern="^[a-z0-9_.]+$"
+              />
             </Column>
 
             <Column
@@ -143,7 +149,7 @@ export default function UserManagement() {
                 valueExpr={"id"}
                 displayExpr={"name"}
               />
-              <ValidationRule type={"required"} />
+              <RequiredRule />
             </Column>
 
             <Column
@@ -151,7 +157,7 @@ export default function UserManagement() {
               caption={t("USER_MANAGEMENT.PASSWORD")}
               visible={false}
             >
-              <ValidationRule type={"required"} />
+              <RequiredRule />
             </Column>
 
             <Column dataField={"email"} caption={t("USER_MANAGEMENT.EMAIL")}>
@@ -164,7 +170,7 @@ export default function UserManagement() {
                 valueExpr={"id"}
                 displayExpr={"roleName"}
               />
-              <ValidationRule type={"required"} />
+              <RequiredRule />
             </Column>
           </DataGrid>
         </div>
