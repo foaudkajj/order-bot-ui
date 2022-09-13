@@ -44,6 +44,8 @@ export const tr = {
     EMAIL: "E-posta",
     ROLE: "K. Yetkisi",
     USER_NAME: "K. Adı",
+    USER_NAME_VALIDATION:
+      "Sadece küçük harf, rakam, alltan tire ve nokta içermelidir.",
   },
   NAV: {
     DASHBOARD: "Ana sayfa",
