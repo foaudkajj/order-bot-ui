@@ -78,6 +78,7 @@ export const en = {
       UNIT_PRICE: "Unit Price",
       CATEGORY_KEY: "Category",
       GETIR_IMPORT_UPDATE_BTN: "Import/Update Getir",
+      WAIT_IMAGE_UPLOAD: "Please wait until the image is uploaded",
     },
     ORDER: {
       TITLE: "Order Management",

@@ -17,6 +17,7 @@ import GetService from "../../services/get.service";
 import PermissionService from "../../services/permission.service";
 import { Category, DxStoreOptions } from "../../models";
 import ToastService from "../../services/toast.service";
+import { v4 as uuid } from "uuid";
 
 export default function Products() {
   const { t } = useTranslation();
@@ -198,18 +199,23 @@ export default function Products() {
   );
 }
 
-const token = sessionStorage.getItem("Authorization");
-const uploadHeaders = {
-  Authorization: "Bearer " + token,
-};
-const uploadUrl = `${process.env.REACT_APP_API_URL}Products/upload`;
-
 const thumbUploaderEditTemplate = (
   eTemplate: any,
   setIsUploading: (value: boolean) => void
 ) => {
+  const token = sessionStorage.getItem("Authorization");
+  const uploadHeaders = {
+    Authorization: "Bearer " + token,
+  };
+  const uploadUrl = `${process.env.REACT_APP_API_URL}Products/upload`;
+  const fileName = uuid();
+
   const thumbUploaded = (e) => {
-    eTemplate.setValue(e.file.name);
+    eTemplate.setValue(fileName);
+  };
+
+  const beforeSend = (e) => {
+    e.request.setRequestHeader("file-name", fileName);
   };
 
   const uploadImageStarted = (e) => {
@@ -222,6 +228,7 @@ const thumbUploaderEditTemplate = (
   return (
     <>
       <FileUploader
+        onBeforeSend={beforeSend}
         onUploadStarted={uploadImageStarted}
         onFilesUploaded={uploadImageUploaded}
         multiple={false}
