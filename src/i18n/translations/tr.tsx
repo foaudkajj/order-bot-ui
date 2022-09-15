@@ -78,6 +78,7 @@ export const tr = {
     UNIT_PRICE: "Fiyat",
     CATEGORY_KEY: "Kategori",
     GETIR_IMPORT_UPDATE_BTN: "Getir İçe aktar/Güncelle",
+    WAIT_IMAGE_UPLOAD: "Lütfen görselin yüklenmesini bekleyiniz.",
   },
   ORDER: {
     TITLE: "Sipariş Yönetimi",
