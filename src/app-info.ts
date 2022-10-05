@@ -1,5 +1,5 @@
 const appInfo = {
-    title: 'Order Bot Ui'
+    title: 'COMMON.APP_NAME'
 };
 export default appInfo;
 
