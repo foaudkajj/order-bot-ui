@@ -79,12 +79,11 @@ export default function Products() {
   };
 
   const thumbUploaderTemplate = (e: any) => {
-    const blobUrl = process.env.REACT_APP_BLOB_URL;
     return (
       <>
         {e.data.thumbUrl ? (
           <img
-            src={blobUrl + e.data.thumbUrl}
+            src={e.data.thumbUrl}
             alt={e.data.title}
             style={{ width: "40px" }}
           />
@@ -130,6 +129,7 @@ export default function Products() {
               allowUpdating={allowUpdate}
             >
               <Form colCount={3}>
+                <Item dataField="id" />
                 <Item dataField="title" />
                 <Item dataField="unitPrice" />
                 <Item dataField="categoryId" />
@@ -208,14 +208,18 @@ const thumbUploaderEditTemplate = (
     Authorization: "Bearer " + token,
   };
   const uploadUrl = `${process.env.REACT_APP_API_URL}Products/upload`;
-  const fileName = uuid();
 
   const thumbUploaded = (e) => {
-    eTemplate.setValue(fileName);
+    try {
+      const resp = JSON.parse(e.request.response);
+      eTemplate.setValue(resp.thumb.url);
+    } catch (er) {
+      console.log(er);
+    }
   };
 
   const beforeSend = (e) => {
-    e.request.setRequestHeader("file-name", fileName);
+    e.request.setRequestHeader("product-id", eTemplate.row.data.id);
   };
 
   const uploadImageStarted = (e) => {
