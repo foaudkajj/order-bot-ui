@@ -100,7 +100,7 @@ export const tr = {
     SENT: "Gönderildi",
     DELIVERED: "Ulaştırıldı",
     UNIT_PRICE: "Fiyat",
-    PRODUCT_DESCRIPTION: "Ürün",
+    PRODUCT_DESCRIPTION: "Ürün açıklaması",
     PRODUCT_TITLE: "Ürün İsmi",
     COURIER_NAME: "Teslimat Yönetimi",
     DO_NOT_KNOCK: "Zili Çalma",
@@ -120,6 +120,7 @@ export const tr = {
     ONLINE: "Online",
     ON_DELIVERY: "Kapıda",
     CANCEL_REASON: "İptal sebebi",
+    CANCEL: "İptal",
     ENTER_REASON: "Lütfen ürünü iptal sebebini giriniz",
     ORDER_OPERATION_BUTTONS: {
       CONFIRM_ORDER: "Onayla",

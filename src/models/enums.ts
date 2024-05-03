@@ -4,18 +4,35 @@ export enum UserStatus {
 }
 
 export enum OrderStatus {
-  New = 0,
-  UserConfirmed = 1,
-  MerchantConfirmed = 2,
-  Prepared = 3,
-  OrderSent = 4,
-  Delivered = 5,
-  Canceled = 6,
-  FutureOrder = 7,
-  ConfirmedFutureOrder = 8,
+  New = 'NEW',
+  UserConfirmed = 'USER_CONFIRMED',
+  MerchantConfirmed = 'MERCHANT_CONFIRMED',
+  Prepared = 'PREPARED',
+  OrderSent = 'ORDER_SENT',
+  Delivered = 'DELIVERED',
+  Canceled = 'CANCELLED',
+  FutureOrder = 'FUTURE_ORDER',
+  ConfirmedFutureOrder = 'CONFIRMED_FUTURE_ORDER',
 }
 
 export enum DeliveryType {
   ByGetir = 1,
   ByRestaurant = 2,
+}
+
+export enum OrderChannel {
+  Telegram = 'TELEGRAM',
+  YemekSepetei = 'YEMEKSEPETI',
+  Getir = 'GETIR',
+  Panel = 'PANEL',
+}
+
+export enum PaymentMethod {
+  OnDelivery = 'OnDelivery',
+  Online = 'ONLINE',
+}
+
+export enum ProductStatus {
+  // means that the user added the product to the basket by clicking on the related button.
+  InBasket = 'INBASKET',
 }

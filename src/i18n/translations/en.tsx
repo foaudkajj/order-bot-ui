@@ -100,7 +100,7 @@ export const en = {
       CANCELED: "Canceled",
       DELIVERED: "Delivered",
       UNIT_PRICE: "Unit Price",
-      PRODUCT_DESCRIPTION: "Product",
+      PRODUCT_DESCRIPTION: "Product description",
       PRODUCT_TITLE: "Product Name",
       COURIER_NAME: "Courier Name",
       DO_NOT_KNOCK: "Do Not Knock",
@@ -120,6 +120,7 @@ export const en = {
       ONLINE: "Online",
       ON_DELIVERY: "On delivery",
       CANCEL_REASON: "Cancel reason",
+      CANCEL: "İptal",
       ENTER_REASON: "Please enter cancel reason",
       ORDER_OPERATION_BUTTONS: {
         CONFIRM_ORDER: "Confirm",
