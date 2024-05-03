@@ -17,7 +17,7 @@ import GetService from "../../services/get.service";
 import PermissionService from "../../services/permission.service";
 import { Category, DxStoreOptions } from "../../models";
 import ToastService from "../../services/toast.service";
-import { v4 as uuid } from "uuid";
+import { replaceLinksWithHtmlTags } from "../../shared/utils";
 
 export default function Products() {
   const { t } = useTranslation();
@@ -105,6 +105,10 @@ export default function Products() {
     e.cancel = isUploading;
   };
 
+  const descriptionCustomizeText = (e) => {
+    return replaceLinksWithHtmlTags(e.valueText);
+  };
+
   return (
     <React.Fragment>
       <h2 className={"content-block"}>{t("CATEGORY.TITLE")}</h2>
@@ -154,7 +158,6 @@ export default function Products() {
             <Column
               dataField={"unitPrice"}
               caption={t("PRODUCT.UNIT_PRICE")}
-              format={"currency"}
               dataType={"number"}
             >
               <Format type={"currency"} precision={2} />
@@ -164,6 +167,8 @@ export default function Products() {
             <Column
               dataField={"description"}
               caption={t("PRODUCT.DESCRIPTION")}
+              encodeHtml={false}
+              customizeText={descriptionCustomizeText}
               editorOptions={{ autoResizeEnabled: true }}
             >
               <ValidationRule type={"required"} />

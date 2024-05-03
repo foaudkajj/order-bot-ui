@@ -15,6 +15,7 @@ import ToastService from "../../services/toast.service";
 import DxStoreService from "../../services/dx-store.service";
 import OrderService from "../../services/order.service";
 import { Popup, ToolbarItem } from "devextreme-react/popup";
+import { Order } from "../../models/order";
 
 export default function Orders() {
   const { t } = useTranslation();
@@ -23,7 +24,7 @@ export default function Orders() {
 
   const gridInstance = React.createRef<DataGrid>();
   const reasonTxtarea = React.createRef<TextArea>();
-  const popupRef = React.createRef<Popup>();
+  const orderCancelPopupRef = React.createRef<Popup>();
   let orderId = 0;
 
   const storeOption = {
@@ -54,7 +55,7 @@ export default function Orders() {
 
   useEffect(() => {
     const currentInterval = setInterval(async () => {
-      if (!popupRef.current.instance.option("visible")) {
+      if (!orderCancelPopupRef.current.instance.option("visible")) {
         await dataSource.reload();
         if (
           gridInstance?.current?.instance
@@ -108,17 +109,26 @@ export default function Orders() {
     if (e.row.data.customer.location) {
       const coordinates = JSON.parse(e.row.data.customer.location);
       window.open(
-        "https://www.google.com/maps/dir/?api=1&origin_place_id=ChIJ6_MMY8K1xRQRS7WWM5yBtOo&destination=" +
+        "https://www.google.com/maps/dir/?api=1&destination=" +
           (coordinates.latitude ?? coordinates.lat) +
           "," +
           (coordinates.longitude ?? coordinates.lon) +
-          "&travelmode=driving&origin=corbana",
+          "&travelmode=driving",
         "_blank"
       );
+    } else {
     }
   };
 
-  const getInTouchButtonVisbility = (e: any) => {
+  const directBtnDisabled = (e) => {
+    return !e.row?.data?.customer?.location;
+  };
+
+  const getInTouchBtnDisabled = (e) => {
+    return !e.row?.data?.customer?.telegramUserName;
+  };
+
+  const getInTouchButtonVisbility = (e: { row: { data: Order } }) => {
     return e.row.data?.customer.telegramUserName;
   };
 
@@ -185,13 +195,13 @@ export default function Orders() {
   };
 
   const onPopupHidden = (e) => {
-    popupRef.current.instance.hide();
+    orderCancelPopupRef.current.instance.hide();
     reasonTxtarea.current.instance.option("value", "");
   };
 
   const showCancelPopup = (order_Id: number) => {
     orderId = order_Id;
-    popupRef.current.instance.show();
+    orderCancelPopupRef.current.instance.show();
   };
 
   return (
@@ -266,12 +276,14 @@ export default function Orders() {
                 icon={"fas fa-route"}
                 hint={t("ORDER.CUSTOMER.LOCATION")}
                 onClick={directToLocation}
+                disabled={directBtnDisabled}
               ></Button>
               <Button
                 visible={getInTouchButtonVisbility}
                 icon={"fab fa-telegram"}
                 hint={t("ORDER.GET_IN_TOUCH")}
                 onClick={getInTouch}
+                disabled={getInTouchBtnDisabled}
               ></Button>
             </Column>
 
@@ -292,7 +304,7 @@ export default function Orders() {
       </div>
 
       <Popup
-        ref={popupRef}
+        ref={orderCancelPopupRef}
         dragEnabled={false}
         closeOnOutsideClick={true}
         showCloseButton={true}
@@ -308,7 +320,7 @@ export default function Orders() {
           toolbar="bottom"
           location="after"
           options={{
-            text: "Cancel Order",
+            text: t("ORDER.CANCEL"),
             onClick: async () => {
               try {
                 await OrderService.cancelOrder({
@@ -316,7 +328,7 @@ export default function Orders() {
                   cancelReason: reasonTxtarea.current.instance.option("value"),
                 });
                 reasonTxtarea.current.instance.option("value", "");
-                popupRef.current.instance.hide();
+                orderCancelPopupRef.current.instance.hide();
                 await dataSource.reload();
               } catch (e) {
                 console.log(e);
@@ -341,6 +353,10 @@ export default function Orders() {
 
 const DetailTemplate = (order: any) => {
   const { t } = useTranslation();
+
+  // const prodDescriptionCustomizeText = (e) => {
+  //   return replaceLinksWithHtmlTags(e.valueText);
+  // };
 
   const orderOptionsTemplate = (e) => {
     return (
@@ -443,16 +459,19 @@ const DetailTemplate = (order: any) => {
         columnAutoWidth={true}
         dataSource={order.data.data.orderItems}
         showBorders={true}
+        wordWrapEnabled={true}
       >
-        <Column dataField="amount" caption={t("ORDER.AMOUNT")}></Column>
         <Column
           dataField="product.title"
           caption={t("ORDER.PRODUCT_TITLE")}
         ></Column>
-        <Column
+        <Column dataField="amount" caption={t("ORDER.AMOUNT")}></Column>
+        {/* <Column
           dataField="product.description"
+          encodeHtml={false}
+          customizeText={prodDescriptionCustomizeText}
           caption={t("ORDER.PRODUCT_DESCRIPTION")}
-        ></Column>
+        ></Column> */}
         <Column
           dataField="product.unitPrice"
           caption={t("ORDER.UNIT_PRICE")}
@@ -461,13 +480,13 @@ const DetailTemplate = (order: any) => {
         >
           <Format type={"currency"} precision={2}></Format>
         </Column>
-        <Column
+        {/* <Column
           dataField="orderOptions"
           caption={t("ORDER.PRODUCT_OPTIONS")}
           cellRender={orderOptionsTemplate}
-        ></Column>
+        ></Column> */}
+        {/* <Column dataField="itemNote" caption={t("ORDER.PRODUCT_NOTE")}></Column> */}
 
-        <Column dataField="itemNote" caption={t("ORDER.PRODUCT_NOTE")}></Column>
         <Scrolling columnRenderingMode={"virtual"}></Scrolling>
       </DataGrid>
     </>
@@ -489,33 +508,42 @@ const OrderStausTemplate = (props: any) => {
     let newOrderStatus = row.data.orderStatus;
 
     if (row.data.orderChannel === "TELEGRAM") {
-      newOrderStatus = row.data.orderStatus + 1;
-    } else if (row.data.orderChannel === "GETIR") {
-      if (row.data.orderStatus === OrderStatus.Prepared) {
-        newOrderStatus = OrderStatus.Delivered;
-      } else if (row.data.orderStatus !== OrderStatus.FutureOrder) {
-        newOrderStatus = row.data.orderStatus + 1;
-      }
+      newOrderStatus = getNextStatus(row.data.orderStatus);
     }
-
     await dataSource
       .store()
       .update(row.data.id, { orderStatus: newOrderStatus });
     await dataSource.reload();
   };
 
+  const getNextStatus = (current: OrderStatus): OrderStatus => {
+    switch (current) {
+      case OrderStatus.New:
+        return OrderStatus.UserConfirmed;
+      case OrderStatus.UserConfirmed:
+        return OrderStatus.MerchantConfirmed;
+      case OrderStatus.MerchantConfirmed:
+        return OrderStatus.Prepared;
+      case OrderStatus.Prepared:
+        return OrderStatus.OrderSent;
+      case OrderStatus.OrderSent:
+        return OrderStatus.Delivered;
+      case OrderStatus.Delivered:
+    }
+  };
+
   return (
     <>
       <DropDownButton
         disabled={
-          row.data.orderStatus === 5 ||
-          row.data.orderStatus === 6 ||
-          row.data.orderStatus === 8
+          row.data.orderStatus === OrderStatus.Delivered ||
+          row.data.orderStatus === OrderStatus.Canceled ||
+          row.data.orderStatus === OrderStatus.ConfirmedFutureOrder
         }
         splitButton={true}
         useSelectMode={false}
         text={row.text}
-        items={[{ value: 1, name: t("CANCEL"), icon: "fas fa-ban" }]}
+        items={[{ value: 1, name: t("ORDER.CANCEL"), icon: "fas fa-ban" }]}
         displayExpr={"name"}
         keyExpr={"id"}
         onButtonClick={onOperationItemClick}
