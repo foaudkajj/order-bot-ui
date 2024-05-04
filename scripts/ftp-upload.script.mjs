@@ -11,7 +11,14 @@ const ftpConfig = {
 
 const localBuildPath = "./build.zip";
 const ftpProjDirectory = "/public_html/";
-const systemFileFolders = [".", "..", ".htaccess", ".well-known", "cgi-bin"];
+const systemFileFolders = [
+  ".",
+  "..",
+  ".htaccess",
+  ".well-known",
+  "cgi-bin",
+  "node_modules",
+];
 
 // Initialize FTP client
 const client = new Client();

@@ -1,6 +1,6 @@
 {
   "name": "order-bot-ui",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.4",
@@ -28,14 +28,15 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "npm run remove-old-build-folder && react-scripts build && npm run zip-build-folder && npm run deploy-with-ftp && rimraf build.zip",
+    "build": "react-scripts build",
+    "build-upload": "npm run remove-old-build-folder && npm run build && npm run zip-build-folder && npm run upload-with-ftp && rimraf build.zip",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "build-themes": "devextreme build",
     "postinstall": "npm run build-themes",
     "remove-old-build-folder": "if exist build.zip del build.zip",
     "zip-build-folder": "bestzip build.zip build/*",
-    "deploy-with-ftp": "node scripts/ftp-deploy.script.mjs"
+    "upload-with-ftp": "node scripts/ftp-upload.script.mjs"
   },
   "eslintConfig": {
     "extends": [
