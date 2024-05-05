@@ -8,6 +8,9 @@ export const tr = {
   ERROR: {
     REFERENCE_ERROR: "Bu kayıt başka bir yerde kullanılmaktadır.",
     CATEGORY_KEY_EXISTS: "Bu kategori daha önce kullanılmıştır.",
+    ORDER_ID_NOT_PROVIDED: "Sipariş nosu boş olamaz.",
+    MERCHANT_USER_NOT_FOUND: "Bu işyerinin hiç kullanıcısı yoktur.",
+    MERCHANT_LAST_USER: "İşyerinizin son kullanıcısıdır. Silinemez.",
   },
   LOGIN: {
     TITLE: "Giriş yap",
@@ -174,6 +177,7 @@ export const tr = {
       FAST_PREPARE: "En az 1.dk beklemeniz gerekiyor.",
       FAST_DELIVER: "En az 1.dk beklemeniz gerekiyor.",
       GENERAL_ERROR: "Getir genel hata. Hata Kodu {{errorCode}}",
+      SERVICE_ERROR: "Getir sunucları yanıt vermiyor.",
     },
   },
   YEMEKSEPETI: {

@@ -8,6 +8,9 @@ export const en = {
   ERROR: {
     REFERENCE_ERROR: "The row is used in a different place.",
     CATEGORY_KEY_EXISTS: "Bu kategori daha önce kullanılmıştır.",
+    ORDER_ID_NOT_PROVIDED: "Sipariş nosu boş olamaz.",
+    MERCHANT_USER_NOT_FOUND: "Bu işyerinin hiç kullanıcısı yoktur.",
+    MERCHANT_LAST_USER: "İşyerinizin son kullanıcısıdır. Silinemez.",
   },
   LOGIN: {
     TITLE: "Login",
@@ -148,6 +151,7 @@ export const en = {
       FAST_PREPARE: "En az 1.dk beklemeniz gerekiyor.",
       FAST_DELIVER: "En az 1.dk beklemeniz gerekiyor.",
       GENERAL_ERROR: "Getir General Error. Code: {{errorCode}}",
+      SERVICE_ERROR: "Getir sunucları yanıt vermiyor.",
     },
   },
   YEMEKSEPETI: {
