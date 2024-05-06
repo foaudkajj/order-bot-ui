@@ -34,9 +34,9 @@ const getStore = (storeOptions: DxStoreOptions): CustomStore => {
       }
     },
     onBeforeSend: (method, ajaxOptions) => {
-      if (sessionStorage.getItem("Authorization")) {
+      if (localStorage.getItem("Authorization")) {
         ajaxOptions.headers = {
-          Authorization: "Bearer " + sessionStorage.getItem("Authorization"),
+          Authorization: "Bearer " + localStorage.getItem("Authorization"),
         };
       }
       return storeOptions.OnBeforeSend;

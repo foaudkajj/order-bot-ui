@@ -208,7 +208,7 @@ const thumbUploaderEditTemplate = (
   eTemplate: any,
   setIsUploading: (value: boolean) => void
 ) => {
-  const token = sessionStorage.getItem("Authorization");
+  const token = localStorage.getItem("Authorization");
   const uploadHeaders = {
     Authorization: "Bearer " + token,
   };

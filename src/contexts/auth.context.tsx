@@ -17,7 +17,7 @@ function AuthProvider(props) {
       const user = JSON.parse(
         localStorage.getItem("user") ?? "false"
       ) as LoginResponse;
-      const token = sessionStorage.getItem("Authorization");
+      const token = localStorage.getItem("Authorization");
       if (user && token) {
         setUser(user);
       }
@@ -30,7 +30,7 @@ function AuthProvider(props) {
     const result = await sendSignInRequest(username, password);
     if (result?.data?.isAuthenticated) {
       setUser(result.data);
-      sessionStorage.setItem("Authorization", result.data.token);
+      localStorage.setItem("Authorization", result.data.token);
       localStorage.setItem("user", JSON.stringify(result.data));
     } else {
       setUser(null);
@@ -41,7 +41,7 @@ function AuthProvider(props) {
   }, []);
 
   const signOut = useCallback(() => {
-    sessionStorage.removeItem("Authorization");
+    localStorage.removeItem("Authorization");
     localStorage.removeItem("user");
     setUser(undefined);
   }, []);
