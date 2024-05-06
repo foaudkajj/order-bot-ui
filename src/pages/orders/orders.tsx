@@ -1,31 +1,39 @@
-import { DataGrid, DropDownButton, Form, TextArea } from "devextreme-react";
+import { DataGrid } from "devextreme-react";
 import React, { useEffect, useState } from "react";
 import {
   Button,
   Column,
+  FilterRow,
   Format,
+  Lookup,
   MasterDetail,
-  Scrolling,
+  Summary,
+  TotalItem,
 } from "devextreme-react/data-grid";
 import DataSource from "devextreme/data/data_source";
-import { Item } from "devextreme-react/form";
-import { DeliveryType, OrderStatus } from "../../models";
+import { DeliveryType, OrderStatus, PaymentMethod } from "../../models";
 import { useTranslation } from "react-i18next";
 import ToastService from "../../services/toast.service";
 import DxStoreService from "../../services/dx-store.service";
-import OrderService from "../../services/order.service";
-import { Popup, ToolbarItem } from "devextreme-react/popup";
 import { Order } from "../../models/order";
+import OrderStausBtn from "./order-status-btn";
+import OrderDetailsTemplate from "./order-details";
 
 export default function Orders() {
   const { t } = useTranslation();
   const [audio] = useState(new Audio(require("../../assets/new-order.mp3")));
   const [playing, setPlaying] = useState(false);
+  const [cancelPopupVisibility, setCancelPopupVisibility] = useState(false);
+  const [paymentMethods] = useState(
+    Object.values(PaymentMethod).map((v) => {
+      return {
+        id: v,
+        text: t(`ORDER.${v.toUpperCase()}`),
+      };
+    })
+  );
 
   const gridInstance = React.createRef<DataGrid>();
-  const reasonTxtarea = React.createRef<TextArea>();
-  const orderCancelPopupRef = React.createRef<Popup>();
-  let orderId = 0;
 
   const storeOption = {
     loadUrl: "Orders/Get",
@@ -55,8 +63,8 @@ export default function Orders() {
 
   useEffect(() => {
     const currentInterval = setInterval(async () => {
-      if (!orderCancelPopupRef.current.instance.option("visible")) {
-        await dataSource.reload();
+      if (!cancelPopupVisibility) {
+        await gridInstance.current.instance.refresh(true);
         if (
           gridInstance?.current?.instance
             ?.getDataSource()
@@ -68,7 +76,7 @@ export default function Orders() {
           setPlaying(false);
         }
       }
-    }, 10_000);
+    }, 60_000);
     return () => clearInterval(currentInterval);
   });
 
@@ -78,6 +86,10 @@ export default function Orders() {
 
   const gridInitNewRow = (e: any) => {
     e.data.createDate = new Date();
+  };
+
+  const onCancelPopupVisibilityChange = (visible: boolean) => {
+    setCancelPopupVisibility(visible);
   };
 
   const onRowPrepared = (e: any) => {
@@ -90,20 +102,20 @@ export default function Orders() {
     }
   };
 
-  const paymentMethodsDisplayValue = (rowData: any) => {
-    let text = "";
+  // const paymentMethodsDisplayValue = (rowData: any) => {
+  //   let text = "";
 
-    switch (rowData.paymentMethod) {
-      case "OnDelivery":
-        text = "ORDER.ON_DELIVERY";
-        break;
+  //   switch (rowData.paymentMethod) {
+  //     case "OnDelivery":
+  //       text = "ORDER.ON_DELIVERY";
+  //       break;
 
-      case "ONLINE":
-        text = "ORDER.ONLINE";
-        break;
-    }
-    return t(text);
-  };
+  //     case "ONLINE":
+  //       text = "ORDER.ONLINE";
+  //       break;
+  //   }
+  //   return t(text);
+  // };
 
   const directToLocation = (e: any) => {
     if (e.row.data.customer.location) {
@@ -194,16 +206,6 @@ export default function Orders() {
     }
   };
 
-  const onPopupHidden = (e) => {
-    orderCancelPopupRef.current.instance.hide();
-    reasonTxtarea.current.instance.option("value", "");
-  };
-
-  const showCancelPopup = (order_Id: number) => {
-    orderId = order_Id;
-    orderCancelPopupRef.current.instance.show();
-  };
-
   return (
     <>
       <h2 className={"content-block"}>{t("NAV.ORDERS")}</h2>
@@ -217,7 +219,8 @@ export default function Orders() {
             onInitNewRow={gridInitNewRow}
             onRowPrepared={onRowPrepared}
           >
-            <MasterDetail enabled={true} component={DetailTemplate} />
+            <FilterRow visible={true} />
+            <MasterDetail enabled={true} component={OrderDetailsTemplate} />
 
             <Column
               allowSorting={false}
@@ -241,11 +244,16 @@ export default function Orders() {
 
             <Column
               width={"auto"}
-              calculateDisplayValue={paymentMethodsDisplayValue}
               allowSorting={false}
               caption={t("ORDER.PAYMENT_METHOD")}
               dataField={"paymentMethod"}
-            ></Column>
+            >
+              <Lookup
+                dataSource={paymentMethods}
+                displayExpr={"text"}
+                valueExpr={"id"}
+              />
+            </Column>
 
             <Column
               width={"auto"}
@@ -291,264 +299,24 @@ export default function Orders() {
               allowSorting={false}
               calculateDisplayValue={orderStatusColumnCustomizeText}
               cellRender={(row) => (
-                <OrderStausTemplate
-                  row={row}
+                <OrderStausBtn
+                  gridRow={row}
                   dataSource={dataSource}
-                  gridInstance={gridInstance}
-                  showCancelPopup={showCancelPopup}
+                  onCancelPopupVisibilityChange={onCancelPopupVisibilityChange}
                 />
               )}
             ></Column>
+
+            <Summary>
+              <TotalItem
+                column="totalPrice"
+                summaryType="sum"
+                valueFormat="currency"
+              />
+            </Summary>
           </DataGrid>
         </div>
       </div>
-
-      <Popup
-        ref={orderCancelPopupRef}
-        dragEnabled={false}
-        closeOnOutsideClick={true}
-        showCloseButton={true}
-        showTitle={true}
-        title={t("ORDER.CANCEL_REASON")}
-        container=".dx-viewport"
-        width={400}
-        height={300}
-        onHidden={onPopupHidden}
-      >
-        <ToolbarItem
-          widget="dxButton"
-          toolbar="bottom"
-          location="after"
-          options={{
-            text: t("ORDER.CANCEL"),
-            onClick: async () => {
-              try {
-                await OrderService.cancelOrder({
-                  orderId: orderId,
-                  cancelReason: reasonTxtarea.current.instance.option("value"),
-                });
-                reasonTxtarea.current.instance.option("value", "");
-                orderCancelPopupRef.current.instance.hide();
-                await dataSource.reload();
-              } catch (e) {
-                console.log(e);
-              }
-            },
-          }}
-        />
-
-        <div className="dx-field">
-          <TextArea
-            ref={reasonTxtarea}
-            autoResizeEnabled={true}
-            width={"100%"}
-            placeholder={t("ORDER.ENTER_REASON")}
-            showClearButton={true}
-          />
-        </div>
-      </Popup>
     </>
   );
 }
-
-const DetailTemplate = (order: any) => {
-  const { t } = useTranslation();
-
-  // const prodDescriptionCustomizeText = (e) => {
-  //   return replaceLinksWithHtmlTags(e.valueText);
-  // };
-
-  const orderOptionsTemplate = (e) => {
-    return (
-      <>
-        {order?.data?.orderOptions?.map((orderOption: any) => {
-          return (
-            <li>
-              {orderOption?.option?.name + " " + orderOption?.price + " ₺"}
-            </li>
-          );
-        })}
-      </>
-    );
-  };
-
-  return (
-    <>
-      <Form
-        showColonAfterLabel={true}
-        readOnly={true}
-        formData={order?.data?.data}
-        labelLocation="top"
-      >
-        <Item dataField={"note"} label={{ text: t("ORDER.NOTE") }}></Item>
-        <Item
-          dataField={"orderNo"}
-          label={{ text: t("ORDER.ORDER_NO") }}
-        ></Item>
-        <Item
-          dataField={"customer.address"}
-          label={{ text: t("ORDER.CUSTOMER.ADDRESS") }}
-          editorType={"dxTextArea"}
-        ></Item>
-      </Form>
-
-      <hr />
-
-      {order.data.data.orderChannel === "GETIR" && (
-        <Form
-          showColonAfterLabel={true}
-          readOnly={true}
-          formData={order?.data?.data?.getirOrder}
-          labelLocation="top"
-          colCount={3}
-        >
-          <Item dataField={"id"} label={{ text: t("ORDER.ORDER_NO") }}></Item>
-          <Item
-            dataField={"isScheduled"}
-            label={{ text: t("ORDER.IS_SCHEDULED") }}
-          ></Item>
-          <Item
-            dataField={"courierName"}
-            label={{ text: t("ORDER.COURIER_NAME") }}
-          ></Item>
-          <Item
-            dataField={"doNotKnock"}
-            label={{ text: t("ORDER.DO_NOT_KNOCK") }}
-          ></Item>
-          <Item
-            dataField={"dropOffAtDoor"}
-            label={{ text: t("ORDER.DROP_OFF_AT_DOOR") }}
-          ></Item>
-
-          <Item
-            dataField={"isEcoFriendly"}
-            label={{ text: t("ORDER.IS_ECO_FRIENDLY") }}
-          ></Item>
-
-          <Item
-            dataField={"totalPrice"}
-            label={{ text: t("ORDER.TOTAL_PRICE") }}
-          ></Item>
-
-          <Item
-            dataField={"clientName"}
-            label={{ text: t("ORDER.CLIENT_NAME") }}
-          ></Item>
-
-          <Item
-            dataField={"clientDeliveryAddress"}
-            label={{ text: t("ORDER.CLIENT_DELIVERY_ADDRESS") }}
-          ></Item>
-
-          <Item
-            dataField={"clientDistrict"}
-            label={{ text: t("ORDER.CLIENT_DISTRICT") }}
-          ></Item>
-
-          <Item
-            dataField={"clientCity"}
-            label={{ text: t("ORDER.CLIENT_CITY") }}
-          ></Item>
-        </Form>
-      )}
-
-      <hr />
-
-      <DataGrid
-        allowColumnReordering={true}
-        columnAutoWidth={true}
-        dataSource={order.data.data.orderItems}
-        showBorders={true}
-        wordWrapEnabled={true}
-      >
-        <Column
-          dataField="product.title"
-          caption={t("ORDER.PRODUCT_TITLE")}
-        ></Column>
-        <Column dataField="amount" caption={t("ORDER.AMOUNT")}></Column>
-        {/* <Column
-          dataField="product.description"
-          encodeHtml={false}
-          customizeText={prodDescriptionCustomizeText}
-          caption={t("ORDER.PRODUCT_DESCRIPTION")}
-        ></Column> */}
-        <Column
-          dataField="product.unitPrice"
-          caption={t("ORDER.UNIT_PRICE")}
-          format="currency"
-          dataType={"number"}
-        >
-          <Format type={"currency"} precision={2}></Format>
-        </Column>
-        {/* <Column
-          dataField="orderOptions"
-          caption={t("ORDER.PRODUCT_OPTIONS")}
-          cellRender={orderOptionsTemplate}
-        ></Column> */}
-        {/* <Column dataField="itemNote" caption={t("ORDER.PRODUCT_NOTE")}></Column> */}
-
-        <Scrolling columnRenderingMode={"virtual"}></Scrolling>
-      </DataGrid>
-    </>
-  );
-};
-
-const OrderStausTemplate = (props: any) => {
-  const row = props.row;
-  const dataSource = props.dataSource;
-  // const gridInstance = props.gridInstance;
-
-  const { t } = useTranslation();
-
-  const showCancelPopup = async (e) => {
-    props.showCancelPopup(row.data.id);
-  };
-
-  const onOperationItemClick = async () => {
-    let newOrderStatus = row.data.orderStatus;
-
-    if (row.data.orderChannel === "TELEGRAM") {
-      newOrderStatus = getNextStatus(row.data.orderStatus);
-    }
-    await dataSource
-      .store()
-      .update(row.data.id, { orderStatus: newOrderStatus });
-    await dataSource.reload();
-  };
-
-  const getNextStatus = (current: OrderStatus): OrderStatus => {
-    switch (current) {
-      case OrderStatus.New:
-        return OrderStatus.UserConfirmed;
-      case OrderStatus.UserConfirmed:
-        return OrderStatus.MerchantConfirmed;
-      case OrderStatus.MerchantConfirmed:
-        return OrderStatus.Prepared;
-      case OrderStatus.Prepared:
-        return OrderStatus.OrderSent;
-      case OrderStatus.OrderSent:
-        return OrderStatus.Delivered;
-      case OrderStatus.Delivered:
-    }
-  };
-
-  return (
-    <>
-      <DropDownButton
-        disabled={
-          row.data.orderStatus === OrderStatus.Delivered ||
-          row.data.orderStatus === OrderStatus.Canceled ||
-          row.data.orderStatus === OrderStatus.ConfirmedFutureOrder
-        }
-        splitButton={true}
-        useSelectMode={false}
-        text={row.text}
-        items={[{ value: 1, name: t("ORDER.CANCEL"), icon: "fas fa-ban" }]}
-        displayExpr={"name"}
-        keyExpr={"id"}
-        onButtonClick={onOperationItemClick}
-        onItemClick={showCancelPopup}
-      ></DropDownButton>
-    </>
-  );
-};

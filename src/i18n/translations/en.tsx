@@ -121,7 +121,7 @@ export const en = {
       PRODUCT_OPTIONS: "Options",
       PRODUCT_NOTE: "Product note",
       ONLINE: "Online",
-      ON_DELIVERY: "On delivery",
+      ONDELIVERY: "On delivery",
       CANCEL_REASON: "Cancel reason",
       CANCEL: "İptal",
       ENTER_REASON: "Please enter cancel reason",

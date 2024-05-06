@@ -1,5 +1,5 @@
 import { Customer } from "./customer";
-import { OrderChannel, PaymentMethod } from "./enums";
+import { OrderChannel, OrderStatus, PaymentMethod } from "./enums";
 import { GetirOrder } from "./getir-order";
 import { Merchant } from "./merchant";
 import { OrderItem } from "./order-item";
@@ -10,7 +10,7 @@ export class Order {
   orderChannel: OrderChannel;
   paymentMethod: PaymentMethod;
   totalPrice: number;
-  orderStatus?: number;
+  orderStatus?: OrderStatus;
   createDate: Date;
   note?: string;
   cancelReason?: string;

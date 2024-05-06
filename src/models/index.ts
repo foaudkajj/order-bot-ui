@@ -7,3 +7,11 @@ export * from "./category";
 export * from "./product";
 export * from "./requests/role-id-and-permissions";
 export * from "./requests/cancel-order.request";
+export * from "./order";
+export * from "./customer";
+export * from "./getir-order";
+export * from "./merchant";
+export * from "./option-category";
+export * from "./option";
+export * from "./order-item";
+
