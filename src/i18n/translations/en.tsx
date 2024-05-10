@@ -21,6 +21,7 @@ export const en = {
     WRNOG_LOGIN_CREDENTIALS: "Girdiğiniz K. Adı veya Şifre Yanlıştır.",
     USER_NAME: "Kullanıcı adı",
     PASSWORD: "şifre",
+    TOKEN_EXPIRE: "Your token expired. Please login again. You will be redirected to login page...",
   },
   THEME: {
     LOGOUT_BUTTON: "Çıkış Yap",

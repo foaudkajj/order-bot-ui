@@ -21,6 +21,8 @@ export const tr = {
     WRNOG_LOGIN_CREDENTIALS: "Girdiğiniz K. Adı veya Şifre Yanlıştır.",
     USER_NAME: "Kullanıcı adı",
     PASSWORD: "şifre",
+    TOKEN_EXPIRE:
+      "Oturum süresi dolmuştur. Giriş sayfasına yönlendiriliyorsunuz...",
   },
   THEME: {
     LOGOUT_BUTTON: "Çıkış Yap",

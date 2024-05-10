@@ -1,9 +1,29 @@
-import axios, { AxiosResponse } from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import { UIResponse } from "../models";
+import ToastService from "./toast.service";
+import { t } from "i18next";
 
 const client = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
 });
+
+client.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  async (error: AxiosError) => {
+    if (
+      error.response.status === 401 &&
+      !error?.config?.url?.toLowerCase().includes("login")
+    ) {
+      localStorage.removeItem("Authorization");
+      ToastService.showToast("error", t("LOGIN.TOKEN_EXPIRE"));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      return (window.location.href = "/");
+    }
+    return Promise.reject(error);
+  }
+);
 
 client.interceptors.request.use(function (config) {
   const token = localStorage.getItem("Authorization");

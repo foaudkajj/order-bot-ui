@@ -29,7 +29,7 @@ export enum OrderChannel {
 
 export enum PaymentMethod {
   OnDelivery = 'OnDelivery',
-  Online = 'ONLINE',
+  Online = 'Online',
 }
 
 export enum ProductStatus {
