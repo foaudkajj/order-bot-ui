@@ -1,7 +1,6 @@
-import { DataGrid } from "devextreme-react";
+import { Button, DataGrid } from "devextreme-react";
 import React, { useEffect, useState } from "react";
 import {
-  Button,
   Column,
   FilterRow,
   Format,
@@ -94,11 +93,11 @@ export default function Orders() {
 
   const onRowPrepared = (e: any) => {
     if (e.rowType === "data") {
-      if (e.data.orderChannel === "TELEGRAM") {
-        e.rowElement.style.backgroundColor = "#7fc8e8";
-      } else if (e.data.orderChannel === "GETIR") {
-        e.rowElement.style.backgroundColor = "#a8a1d3";
-      }
+      // if (e.data.orderChannel === "TELEGRAM") {
+      //   e.rowElement.style.backgroundColor = "#7fc8e8";
+      // } else if (e.data.orderChannel === "GETIR") {
+      //   e.rowElement.style.backgroundColor = "#a8a1d3";
+      // }
     }
   };
 
@@ -132,26 +131,16 @@ export default function Orders() {
     }
   };
 
-  const directBtnDisabled = (e) => {
-    return !e.row?.data?.customer?.location;
-  };
-
-  const getInTouchBtnDisabled = (e) => {
-    return !e.row?.data?.customer?.telegramUserName;
-  };
-
-  const getInTouchButtonVisbility = (e: { row: { data: Order } }) => {
-    return e.row.data?.customer.telegramUserName;
-  };
-
-  const getInTouch = (e: any) => {
-    if (e.row.data?.customer.telegramUserName) {
+  const getInTouch = (e: any, app: "WHATSAPP" | "TELEGRAM") => {
+    const phoneNumber = e.row.data?.customer.phoneNumber;
+    const telegramUserName = e.row.data?.customer.telegramUserName;
+    if ((phoneNumber || telegramUserName) && app === "TELEGRAM") {
       window.open(
-        "https://telegram.me/" + e.row.data?.customer.telegramUserName,
+        "https://telegram.me/" + (phoneNumber ?? telegramUserName),
         "_blank"
       );
-
-      // https://api.whatsapp.com/send/?phone=00905394679794
+    } else if (app === "WHATSAPP" && phoneNumber) {
+      window.open("https://wa.me/" + phoneNumber, "_blank");
     }
   };
 
@@ -205,6 +194,36 @@ export default function Orders() {
         return t("ORDER.ORDER_OPERATION_BUTTONS.FUTURE_ORDER_CONFIRMED");
     }
   };
+
+  const userContactBtns = (e) => (
+    <>
+      <div>
+        <Button
+          icon={"fas fa-route"}
+          hint={t("ORDER.CUSTOMER.LOCATION")}
+          onClick={(_) => directToLocation(e)}
+          disabled={!e.row?.data?.customer?.location}
+        ></Button>
+
+        <Button
+          icon={"fab fa-telegram"}
+          hint={t("ORDER.GET_IN_TOUCH")}
+          onClick={(_) => getInTouch(e, "TELEGRAM")}
+          disabled={
+            !e.row?.data?.customer?.telegramUserName &&
+            !e.row.data?.customer.phoneNumber
+          }
+        ></Button>
+
+        <Button
+          icon={"fab fa-whatsapp"}
+          hint={t("ORDER.GET_IN_TOUCH")}
+          onClick={(_) => getInTouch(e, "WHATSAPP")}
+          disabled={!e.row.data?.customer.phoneNumber}
+        ></Button>
+      </div>
+    </>
+  );
 
   return (
     <>
@@ -279,21 +298,13 @@ export default function Orders() {
               dataField={"customer.phoneNumber"}
             ></Column>
 
-            <Column type={"buttons"}>
-              <Button
-                icon={"fas fa-route"}
-                hint={t("ORDER.CUSTOMER.LOCATION")}
-                onClick={directToLocation}
-                disabled={directBtnDisabled}
-              ></Button>
-              <Button
-                visible={getInTouchButtonVisbility}
-                icon={"fab fa-telegram"}
-                hint={t("ORDER.GET_IN_TOUCH")}
-                onClick={getInTouch}
-                disabled={getInTouchBtnDisabled}
-              ></Button>
-            </Column>
+            <Column
+              dataField={"location"}
+              caption={t("CUSTOMER.LOCATION")}
+              allowSorting={false}
+              cellRender={userContactBtns}
+              width={150}
+            />
 
             <Column
               allowSorting={false}

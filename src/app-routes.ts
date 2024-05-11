@@ -1,4 +1,12 @@
-import { Categories, HomePage, OrderPage, Products, RoleManagement, UserManagementPage } from "./pages";
+import {
+  Categories,
+  Customers,
+  HomePage,
+  OrderPage,
+  Products,
+  RoleManagement,
+  UserManagementPage,
+} from "./pages";
 import { withNavigationWatcher } from "./contexts/navigation.context";
 
 const routes = [
@@ -16,17 +24,20 @@ const routes = [
   },
   {
     path: "/rolemanagement",
-    element: RoleManagement
+    element: RoleManagement,
   },
   {
     path: "/categories",
-    element: Categories
-  }
-  ,
+    element: Categories,
+  },
   {
     path: "/products",
-    element: Products
-  }
+    element: Products,
+  },
+  {
+    path: "/customers",
+    element: Customers,
+  },
 ];
 
 export default routes.map((route) => {

@@ -67,11 +67,21 @@ export const en = {
     ENTEGRATIONS: "Entegrations",
     YEMEKSEPETI: "Yemeksepetei",
     GETIR: "Getir",
+    CUSTOMERS: "Customers",
   },
   CATEGORY: {
     TITLE: "Category Management",
     NAME: "Name",
     CATEGORY_KEY: "Search Keyword",
+  },
+  CUSTOMER: {
+    TITLE: "Müşteriler",
+    FULL_NAME: "Ad Soyad",
+    TELEGRAM_USER_NAME: "Telegram K. adı",
+    PHONE_NUMBER: "Tel. No.",
+    ADDRESS: "Adres",
+    LOCATION: "Konum",
+    CREATE_DATE: "Eklenme Tarihi",
   },
   PRODUCT: {
     TITLE: "Ürün Yönetimi",

@@ -75,7 +75,7 @@ export default function UserManagement() {
     setAllowUpdate(
       user.isAdmin ?? permissions.includes(PermissionEnum.UPDATE_USER)
     );
-  }, [permissions]);
+  }, [permissions, user]);
 
   return (
     <React.Fragment>
