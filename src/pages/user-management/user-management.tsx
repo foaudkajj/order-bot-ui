@@ -111,13 +111,18 @@ export default function UserManagement() {
               formItem={{ visible: false }}
             />
 
-            <Column dataField={"name"} caption={t("USER_MANAGEMENT.NAME")}>
+            <Column
+              dataField={"name"}
+              caption={t("USER_MANAGEMENT.NAME")}
+              editorOptions={{ maxLength: 50 }}
+            >
               <RequiredRule />
             </Column>
 
             <Column
               dataField={"lastName"}
               caption={t("USER_MANAGEMENT.LASTNAME")}
+              editorOptions={{ maxLength: 50 }}
             >
               <RequiredRule />
             </Column>
@@ -126,12 +131,13 @@ export default function UserManagement() {
               dataField={"cellphone"}
               caption={t("USER_MANAGEMENT.CELLPHONE")}
               dataType={"string"}
-              editorOptions={{ mask: "(999)999-9999" }}
+              editorOptions={{ mask: "(999)999-9999", maxLength: 50 }}
             />
 
             <Column
               dataField={"userName"}
               caption={t("USER_MANAGEMENT.USER_NAME")}
+              editorOptions={{ maxLength: 30 }}
             >
               <RequiredRule />
               <PatternRule
@@ -160,7 +166,11 @@ export default function UserManagement() {
               <RequiredRule />
             </Column>
 
-            <Column dataField={"email"} caption={t("USER_MANAGEMENT.EMAIL")}>
+            <Column
+              dataField={"email"}
+              caption={t("USER_MANAGEMENT.EMAIL")}
+              editorOptions={{ maxLength: 50 }}
+            >
               <ValidationRule type={"email"} />
             </Column>
 

@@ -151,9 +151,20 @@ export default function Products() {
               formItem={{ visible: false }}
             />
 
-            <Column dataField={"title"} caption={t("PRODUCT.PRODUCT_TITLE")}>
+            <Column
+              dataField={"title"}
+              caption={t("PRODUCT.PRODUCT_TITLE")}
+              editorOptions={{ maxLength: 50 }}
+            >
               <ValidationRule type={"required"} />
             </Column>
+
+            <Column
+              dataField={"code"}
+              caption={t("PRODUCT.CODE")}
+              editorOptions={{ maxLength: 6 }}
+              formItem={{ visible: false }}
+            ></Column>
 
             <Column
               dataField={"unitPrice"}
@@ -169,7 +180,7 @@ export default function Products() {
               caption={t("PRODUCT.DESCRIPTION")}
               encodeHtml={false}
               customizeText={descriptionCustomizeText}
-              editorOptions={{ autoResizeEnabled: true }}
+              editorOptions={{ autoResizeEnabled: true, maxLength: 500 }}
             >
               <ValidationRule type={"required"} />
             </Column>

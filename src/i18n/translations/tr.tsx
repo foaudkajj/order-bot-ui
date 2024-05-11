@@ -37,6 +37,7 @@ export const tr = {
   ROLE_MANAGEMENT: {
     TITLE: "Yetki Yönetimi",
     ROLE_NAME: "Yetki Tanımı",
+    DESCRIPTION: "Açıklama",
     SAVE: "Değişiklikleri Kaydet",
   },
   USER_MANAGEMENT: {
@@ -75,6 +76,7 @@ export const tr = {
   },
   PRODUCT: {
     TITLE: "Ürün Yönetimi",
+    CODE: "Ürün Kodu",
     TYPE: "Tipi",
     THUMB_URL: "Görsel",
     PRODUCT_TITLE: "Ürün İsmi",

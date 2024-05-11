@@ -96,6 +96,15 @@ export default function RoleManagement() {
             <Column
               dataField={"roleName"}
               caption={t("ROLE_MANAGEMENT.ROLE_NAME")}
+              editorOptions={{ maxLength: 255 }}
+            >
+              <ValidationRule type={"required"} />
+            </Column>
+
+            <Column
+              dataField={"description"}
+              caption={t("ROLE_MANAGEMENT.DESCRIPTION")}
+              editorOptions={{ maxLength: 255 }}
             >
               <ValidationRule type={"required"} />
             </Column>

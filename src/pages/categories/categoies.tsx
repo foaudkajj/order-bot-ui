@@ -99,6 +99,7 @@ export default function Categories() {
               dataType={"number"}
               visible={false}
               formItem={{ visible: false }}
+              editorOptions={{ maxLength: 30 }}
             />
 
             <Column dataField={"name"} caption={t("CATEGORY.NAME")}>
@@ -110,6 +111,7 @@ export default function Categories() {
               caption={t("CATEGORY.CATEGORY_KEY")}
               visible={false}
               formItem={{ visible: false }}
+              editorOptions={{ maxLength: 50 }}
             >
               <ValidationRule type={"required"} />
             </Column>
