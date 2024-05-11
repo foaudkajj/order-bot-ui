@@ -14,14 +14,17 @@ import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import DxStoreService from "../../services/dx-store.service";
 import GetService from "../../services/get.service";
-import PermissionService from "../../services/permission.service";
-import { Category, DxStoreOptions } from "../../models";
+import { Category, DxStoreOptions, PermissionEnum } from "../../models";
 import ToastService from "../../services/toast.service";
 import { replaceLinksWithHtmlTags } from "../../shared/utils";
+import { useAuth } from "../../contexts/auth.context";
 
 export default function Products() {
   const { t } = useTranslation();
-
+  const {
+    user,
+    user: { permissions },
+  } = useAuth();
   const [categoryList, setCategoryList] = useState<Category[]>([]);
   const [allowAdd, setAllowAdd] = useState<boolean>(false);
   const [allowDelete, setAllowDelete] = useState<boolean>(false);
@@ -61,12 +64,17 @@ export default function Products() {
     GetService.getCategories().then((categories) => {
       setCategoryList(categories.data);
     });
-    PermissionService.getPermissions().then((UIPermissions) => {
-      setAllowAdd(UIPermissions.includes("ADD_PRODUCT"));
-      setAllowDelete(UIPermissions.includes("DELETE_PRODUCT"));
-      setAllowUpdate(UIPermissions.includes("UPDATE_PRODUCT"));
-    });
-  }, []);
+
+    setAllowAdd(
+      user.isAdmin ?? permissions.includes(PermissionEnum.ADD_PRODUCT)
+    );
+    setAllowDelete(
+      user.isAdmin ?? permissions.includes(PermissionEnum.DELETE_PRODUCT)
+    );
+    setAllowUpdate(
+      user.isAdmin ?? permissions.includes(PermissionEnum.UPDATE_PRODUCT)
+    );
+  }, [permissions]);
 
   const onInitNewRow = (e) => {
     e.data.type = "article";

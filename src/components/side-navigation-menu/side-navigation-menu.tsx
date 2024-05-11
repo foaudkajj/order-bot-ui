@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 
 import * as events from "devextreme/events";
 import query from "devextreme/data/query";
-import { LoginResponse } from "../../models";
+import { useAuth } from "../../contexts/auth.context";
 
 export default function SideNavigationMenu(props) {
   const { children, selectedItemChanged, openMenu, compactMode, onMenuReady } =
@@ -15,9 +15,9 @@ export default function SideNavigationMenu(props) {
 
   const { isLarge } = useScreenSize();
   const { t } = useTranslation();
-  const navigationItems =
-    (JSON.parse(localStorage.getItem("user") ?? "[]") as LoginResponse)
-      ?.navigationItems ?? [];
+  const {
+    user: { navigationItems },
+  } = useAuth();
 
   function normalizePath() {
     return query(navigationItems)

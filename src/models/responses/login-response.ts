@@ -2,13 +2,14 @@ import { UserStatus } from "../enums";
 
 export interface LoginResponse {
   userId: number;
+  isAdmin: boolean;
   merchantId: number;
   userName: string;
-  userCode: string;
   userStatus: UserStatus;
   token: string;
   isAuthenticated: boolean;
-  navigationItems: NavigationItem[];
+  permissions?: string[];
+  navigationItems?: NavigationItem[];
 }
 
 export class NavigationItem {
@@ -18,6 +19,6 @@ export class NavigationItem {
   translate: string;
   icon: string;
   url: string;
-  priority:number;
+  priority: number;
   children?: NavigationItem[] = [];
 }

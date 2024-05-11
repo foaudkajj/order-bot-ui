@@ -12,16 +12,23 @@ import "devextreme/data/odata/store";
 import { useTranslation } from "react-i18next";
 import { Button, TreeList } from "devextreme-react";
 import { Selection } from "devextreme-react/tree-list";
-import { DxStoreOptions, RoleIdAndPermissions } from "../../models";
+import {
+  DxStoreOptions,
+  PermissionEnum,
+  RoleIdAndPermissions,
+} from "../../models";
 import ToastService from "../../services/toast.service";
 import RoleService from "../../services/role.service";
-import PermissionService from "../../services/permission.service";
 import CustomStore from "devextreme/data/custom_store";
 import DxStoreService from "../../services/dx-store.service";
+import { useAuth } from "../../contexts/auth.context";
 
 export default function RoleManagement() {
   const { t } = useTranslation();
-
+  const {
+    user,
+    user: { permissions },
+  } = useAuth();
   const [allowAdd, setAllowAdd] = useState<boolean>(false);
   const [allowDelete, setAllowDelete] = useState<boolean>(false);
   const [allowUpdate, setAllowUpdate] = useState<boolean>(false);
@@ -56,12 +63,14 @@ export default function RoleManagement() {
   const store: CustomStore = DxStoreService.getStore(storeOptions);
 
   useEffect(() => {
-    PermissionService.getPermissions().then((UIPermissions) => {
-      setAllowAdd(UIPermissions.includes("ADD_ROLE"));
-      setAllowDelete(UIPermissions.includes("DELETE_ROLE"));
-      setAllowUpdate(UIPermissions.includes("UPDATE_ROLE"));
-    });
-  });
+    setAllowAdd(user.isAdmin ?? permissions.includes(PermissionEnum.ADD_ROLE));
+    setAllowDelete(
+      user.isAdmin ?? permissions.includes(PermissionEnum.DELETE_ROLE)
+    );
+    setAllowUpdate(
+      user.isAdmin ?? permissions.includes(PermissionEnum.UPDATE_ROLE)
+    );
+  }, [permissions]);
 
   return (
     <React.Fragment>
@@ -119,6 +128,10 @@ export default function RoleManagement() {
 
 const MasterDetailTemplate = (role) => {
   const { t } = useTranslation();
+  const {
+    user,
+    user: { permissions },
+  } = useAuth();
   const permissionsTree = useRef(null);
   const [allowUpdatingPermissions, setAllowUpdatingPermissions] =
     useState<boolean>(false);
@@ -127,9 +140,9 @@ const MasterDetailTemplate = (role) => {
   const [permissionsListStore, setPermissionsListStore] = useState<any>();
 
   useEffect(() => {
-    PermissionService.getPermissions().then((UIPermissions) => {
-      setAllowUpdatingPermissions(UIPermissions.includes("UPATE_PERMISSIONS"));
-    });
+    setAllowUpdatingPermissions(
+      user.isAdmin ?? permissions.includes(PermissionEnum.UPATE_PERMISSIONS)
+    );
 
     const permissionsListStoreOption: DxStoreOptions = {
       loadUrl: "Roles/get-permissions",
@@ -144,7 +157,7 @@ const MasterDetailTemplate = (role) => {
     );
 
     setSelectedPermissionIdList(role.data.data.rolePermissionsIds);
-  }, [role.data.data.rolePermissionsIds]);
+  }, [role.data.data.rolePermissionsIds, permissions]);
 
   const treeListTitleDisplayValue = (rowData) => {
     return t(rowData.permissionKey);

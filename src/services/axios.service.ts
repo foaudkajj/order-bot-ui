@@ -17,6 +17,7 @@ client.interceptors.response.use(
       !error?.config?.url?.toLowerCase().includes("login")
     ) {
       localStorage.removeItem("Authorization");
+      localStorage.removeItem("user");
       ToastService.showToast("error", t("LOGIN.TOKEN_EXPIRE"));
       await new Promise((resolve) => setTimeout(resolve, 1000));
       return (window.location.href = "/");

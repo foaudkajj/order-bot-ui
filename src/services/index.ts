@@ -3,5 +3,4 @@ export * from "./login.service";
 export * from "./toast.service";
 export * from "./auth.service";
 export * from "./get.service";
-export * from "./permission.service";
 export * from "./role.service";

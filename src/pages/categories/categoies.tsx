@@ -9,14 +9,17 @@ import CustomStore from "devextreme/data/custom_store";
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import DxStoreService from "../../services/dx-store.service";
-import PermissionService from "../../services/permission.service";
-import { DxStoreOptions } from "../../models";
+import { DxStoreOptions, PermissionEnum } from "../../models";
 import ToastService from "../../services/toast.service";
 import { turkishToLower } from "../../shared/utils";
+import { useAuth } from "../../contexts/auth.context";
 
 export default function Categories() {
   const { t } = useTranslation();
-
+  const {
+    user,
+    user: { permissions },
+  } = useAuth();
   const [allowAdd, setAllowAdd] = useState<boolean>(false);
   const [allowDelete, setAllowDelete] = useState<boolean>(false);
   const [allowUpdate, setAllowUpdate] = useState<boolean>(false);
@@ -51,12 +54,16 @@ export default function Categories() {
   const store: CustomStore = DxStoreService.getStore(storeOption);
 
   useEffect(() => {
-    PermissionService.getPermissions().then((UIPermissions) => {
-      setAllowAdd(UIPermissions.includes("ADD_CATEGORY"));
-      setAllowDelete(UIPermissions.includes("DELETE_CATEGORY"));
-      setAllowUpdate(UIPermissions.includes("UPDATE_CATEGORY"));
-    });
-  }, []);
+    setAllowAdd(
+      user.isAdmin ?? permissions.includes(PermissionEnum.ADD_CATEGORY)
+    );
+    setAllowDelete(
+      user.isAdmin ?? permissions.includes(PermissionEnum.DELETE_CATEGORY)
+    );
+    setAllowUpdate(
+      user.isAdmin ?? permissions.includes(PermissionEnum.UPDATE_CATEGORY)
+    );
+  }, [permissions]);
 
   const onRowInserting = (e) => {
     e.data.categoryKey = turkishToLower(e.data.name)
@@ -99,10 +106,13 @@ export default function Categories() {
               dataType={"number"}
               visible={false}
               formItem={{ visible: false }}
-              editorOptions={{ maxLength: 30 }}
             />
 
-            <Column dataField={"name"} caption={t("CATEGORY.NAME")}>
+            <Column
+              dataField={"name"}
+              caption={t("CATEGORY.NAME")}
+              editorOptions={{ maxLength: 30 }}
+            >
               <ValidationRule type={"required"} />
             </Column>
 

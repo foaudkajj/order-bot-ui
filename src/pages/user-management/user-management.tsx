@@ -12,11 +12,11 @@ import {
 import CustomStore from "devextreme/data/custom_store";
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { DxStoreOptions, Role } from "../../models";
+import { DxStoreOptions, PermissionEnum, Role } from "../../models";
 import DxStoreService from "../../services/dx-store.service";
 import GetService from "../../services/get.service";
-import PermissionService from "../../services/permission.service";
 import ToastService from "../../services/toast.service";
+import { useAuth } from "../../contexts/auth.context";
 
 const UserStatus = [
   { id: 1, name: "Aktif" },
@@ -25,7 +25,10 @@ const UserStatus = [
 
 export default function UserManagement() {
   const { t } = useTranslation();
-
+  const {
+    user,
+    user: { permissions },
+  } = useAuth();
   const [roleList, setRoles] = useState<Role[]>([]);
   const [allowAdd, setAllowAdd] = useState<boolean>(false);
   const [allowDelete, setAllowDelete] = useState<boolean>(false);
@@ -64,12 +67,15 @@ export default function UserManagement() {
     GetService.getRoles().then((roles) => {
       setRoles(roles.data);
     });
-    PermissionService.getPermissions().then((UIPermissions) => {
-      setAllowAdd(UIPermissions.includes("ADD_USER"));
-      setAllowDelete(UIPermissions.includes("DELETE_USER"));
-      setAllowUpdate(UIPermissions.includes("UPDATE_USER"));
-    });
-  }, []);
+
+    setAllowAdd(user.isAdmin ?? permissions.includes(PermissionEnum.ADD_USER));
+    setAllowDelete(
+      user.isAdmin ?? permissions.includes(PermissionEnum.DELETE_USER)
+    );
+    setAllowUpdate(
+      user.isAdmin ?? permissions.includes(PermissionEnum.UPDATE_USER)
+    );
+  }, [permissions]);
 
   return (
     <React.Fragment>
