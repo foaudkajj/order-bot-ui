@@ -108,7 +108,7 @@ export default function Products() {
 
   const onRowSaving = (e) => {
     if (isUploading) {
-      ToastService.showToast("warning", t("PRODUCTS.WAIT_IMAGE_UPLOAD"));
+      ToastService.showToast("warning", t("PRODUCT.WAIT_IMAGE_UPLOAD"));
     }
     e.cancel = isUploading;
   };
