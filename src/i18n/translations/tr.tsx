@@ -11,6 +11,7 @@ export const tr = {
     ORDER_ID_NOT_PROVIDED: "Sipariş nosu boş olamaz.",
     MERCHANT_USER_NOT_FOUND: "Bu işyerinin hiç kullanıcısı yoktur.",
     MERCHANT_LAST_USER: "İşyerinizin son kullanıcısıdır. Silinemez.",
+    UNAUTHORIZED:"Oturumuz zaman aşımına uğradı. Lütfen tekrar giriş yapınız."
   },
   LOGIN: {
     TITLE: "Giriş yap",

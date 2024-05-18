@@ -1,6 +1,8 @@
 import { AxiosError } from "axios";
 import { LoginResponse, UIResponse } from "../models";
 import LoginService from "./login.service";
+import ToastService from "./toast.service";
+import { t } from "i18next";
 
 export async function signIn(
   username,
@@ -25,7 +27,16 @@ export async function signIn(
   }
 }
 
+export async function signOut(): Promise<void> {
+  localStorage.removeItem("Authorization");
+  localStorage.removeItem("user");
+  ToastService.showToast("error", t("LOGIN.TOKEN_EXPIRE"));
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+  window.location.href = "/";
+}
+
 const AuthService = {
   signIn,
+  signOut,
 };
 export default AuthService;

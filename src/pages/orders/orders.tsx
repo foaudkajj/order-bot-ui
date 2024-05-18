@@ -50,11 +50,6 @@ export default function Orders() {
         );
       }
     },
-    errorHandler: (e) => {
-      if (e) {
-        e.message = t(e?.message);
-      }
-    },
   };
   const dataSource = new DataSource({
     store: DxStoreService.getStore(storeOption),

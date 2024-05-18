@@ -1,7 +1,6 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { UIResponse } from "../models";
-import ToastService from "./toast.service";
-import { t } from "i18next";
+import AuthService from "./auth.service";
 
 const client = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
@@ -16,11 +15,7 @@ client.interceptors.response.use(
       error.response.status === 401 &&
       !error?.config?.url?.toLowerCase().includes("login")
     ) {
-      localStorage.removeItem("Authorization");
-      localStorage.removeItem("user");
-      ToastService.showToast("error", t("LOGIN.TOKEN_EXPIRE"));
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      return (window.location.href = "/");
+      await AuthService.signOut();
     }
     return Promise.reject(error);
   }

@@ -1,6 +1,8 @@
 import CustomStore from "devextreme/data/custom_store";
 import { createStore } from "devextreme-aspnet-data-nojquery";
 import { DxStoreOptions, UIResponse } from "../models";
+import AuthService from "./auth.service";
+import { t } from "i18next";
 
 const getStore = (storeOptions: DxStoreOptions): CustomStore => {
   return createStore({
@@ -41,11 +43,19 @@ const getStore = (storeOptions: DxStoreOptions): CustomStore => {
       }
       return storeOptions.OnBeforeSend;
     },
-    errorHandler: (e: Error) => {
+    errorHandler: async (e: Error) => {
+      e.message = t(e?.message);
+
       if (storeOptions.errorHandler) {
         storeOptions.errorHandler(e);
       }
     },
+    onAjaxError:async (e)=>{
+      let statusCode = e.xhr.status;
+      if (statusCode === 401) {
+        await AuthService.signOut();
+      }
+    }
   });
 };
 

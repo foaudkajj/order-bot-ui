@@ -44,12 +44,7 @@ export default function Categories() {
     onUpdated: () => {
       categoriesGrid?.current?.instance?.refresh();
       ToastService.showToast("success");
-    },
-    errorHandler: (e) => {
-      if (e) {
-        e.message = t(e?.message);
-      }
-    },
+    }
   };
   const store: CustomStore = DxStoreService.getStore(storeOption);
 

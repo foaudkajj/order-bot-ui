@@ -52,13 +52,7 @@ export default function Customers() {
     onUpdated: () => {
       gridRef?.current?.instance?.refresh();
       ToastService.showToast("success");
-    },
-    errorHandler: (e) => {
-      console.log(e);
-      if (e) {
-        e.message = t(e?.message);
-      }
-    },
+    }
   };
   const store: CustomStore = DxStoreService.getStore(storeOption);
 
