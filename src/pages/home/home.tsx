@@ -1,9 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import "./home.scss";
+import LoginService from "../../services/login.service";
 
 export default function Home() {
   const { t } = useTranslation();
+
+  useEffect(() => {
+    LoginService.validateToken();
+  }, [t]);
+
   return (
     <React.Fragment>
       <h2 className={"content-block"}>{t('COMMON.APP_NAME')}</h2>
