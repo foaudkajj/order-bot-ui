@@ -11,10 +11,8 @@ client.interceptors.response.use(
     return response;
   },
   async (error: AxiosError) => {
-    if (
-      error.response.status === 401 &&
-      !error?.config?.url?.toLowerCase().includes("login")
-    ) {
+    const url = error?.config?.url?.toLocaleLowerCase() ?? "";
+    if (error.response.status === 401 && !url.includes("login")) {
       await AuthService.signOut();
     }
     return Promise.reject(error);
