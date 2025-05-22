@@ -8,7 +8,7 @@ export default function Home() {
 
   useEffect(() => {
     LoginService.validateToken();
-  }, [t]);
+  }, []);
 
   return (
     <React.Fragment>

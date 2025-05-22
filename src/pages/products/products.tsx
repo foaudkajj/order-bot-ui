@@ -73,6 +73,7 @@ export default function Products() {
 
   const onInitNewRow = (e) => {
     e.data.type = "article";
+    e.data.count = 0;
   };
 
   const gridEditorPreparing = (e) => {
@@ -138,6 +139,7 @@ export default function Products() {
               <Form colCount={3}>
                 <Item dataField="id" />
                 <Item dataField="title" />
+                <Item dataField="count" />
                 <Item dataField="unitPrice" />
                 <Item dataField="categoryId" />
                 <Item dataField="description" colSpan={3} />
@@ -160,6 +162,13 @@ export default function Products() {
               editorOptions={{ maxLength: 50 }}
             >
               <ValidationRule type={"required"} />
+            </Column>
+
+            <Column
+              dataField={"count"}
+              dataType={"number"}
+              caption={t("PRODUCT.PRODUCT_COUNT")}
+            >
             </Column>
 
             <Column

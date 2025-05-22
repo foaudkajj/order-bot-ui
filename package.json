@@ -1,6 +1,6 @@
 {
   "name": "order-bot-ui",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "private": true,
   "dependencies": {
     "axios": "^0.27.2",
@@ -21,14 +21,17 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "build-upload": "npm run remove-old-build-folder && npm run build && npm run zip-build-folder && npm run upload-with-ftp && rimraf build.zip",
+    "build:copy": "npm run build && cpx .env.production build && cpx Dockerfile build && cpx .dockerignore build",
+    "build:upload:droplet": "npm run remove-old-build-folder && npm run build && cpx .env.production build && cpx Dockerfile build && cpx .dockerignore build && npm run upload-to-droplet",
+    "build:upload:isimkaydet": "npm run remove-old-build-folder && npm run build && cpx .env.production build && cpx Dockerfile build && cpx .dockerignore build && npm run zip-build-folder && npm run upload-to-isimkaydet && rimraf build.zip",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "build-themes": "devextreme build",
     "postinstall": "npm run build-themes",
     "remove-old-build-folder": "if exist build.zip del build.zip",
     "zip-build-folder": "bestzip build.zip build/*",
-    "upload-with-ftp": "node scripts/ftp-upload.script.mjs"
+    "upload-to-isimkaydet": "node scripts/ftp-upload.script.isimkaydet.mjs",
+    "upload-to-droplet": "node scripts/ftp-upload.script.droplet.mjs"
   },
   "eslintConfig": {
     "extends": [
@@ -59,9 +62,11 @@
     "@types/react-dom": "^18.0.5",
     "basic-ftp": "^5.0.5",
     "bestzip": "^2.2.1",
+    "cpx": "^1.5.0",
     "devextreme-cli": "1.3.3",
     "devextreme-themebuilder": "^21.2.4",
     "dotenv": "^16.4.5",
+    "ssh2-sftp-client": "^12.0.0",
     "typescript": "^4.7.4"
   }
 }
