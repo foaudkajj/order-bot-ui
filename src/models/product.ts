@@ -7,4 +7,5 @@ export interface Product {
   caption: string;
   productCode: string;
   unitPrice?: number;
+  count?: number;
 }

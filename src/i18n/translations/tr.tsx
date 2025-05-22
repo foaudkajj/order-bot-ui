@@ -91,6 +91,7 @@ export const tr = {
     TYPE: "Tipi",
     THUMB_URL: "Görsel",
     PRODUCT_TITLE: "Ürün İsmi",
+    PRODUCT_COUNT: "Ürün Adedi",
     DESCRIPTION: "Açıklama",
     CAPTION: "Caption",
     UNIT_PRICE: "Fiyat",

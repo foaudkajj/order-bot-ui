@@ -90,6 +90,7 @@ export const en = {
     TYPE: "Type",
     THUMB_URL: "Thumb",
     PRODUCT_TITLE: "Product Title",
+    PRODUCT_COUNT: "Product Count",
     DESCRIPTION: "Description",
     CAPTION: "Caption",
     UNIT_PRICE: "Unit Price",
