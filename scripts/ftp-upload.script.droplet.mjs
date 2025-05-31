@@ -10,7 +10,7 @@ const sftpConfig = {
 };
 
 const localBuildPath = "./build";
-const projDirectory = "/root/order-bot-ui/";
+const projDirectory = "/var/www/html/";
 
 // Initialize SFTP client
 const client = new Client();
